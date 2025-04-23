@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:pdf/widgets.dart' as pw;
-import '../constants/app_colors.dart';
+import '../../constants/app_colors.dart';
 
 class AppTheme {
   ///--------------------------------------

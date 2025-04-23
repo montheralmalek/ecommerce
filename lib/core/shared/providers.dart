@@ -1,0 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+List<BlocProvider> providers = [
+  // BlocProvider(
+  //   create: (context) => GetAllProductsCubit(),
+  // ),
+];

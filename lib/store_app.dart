@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:store/core/utils/themes/app_theme.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store/core/shared/providers.dart';
+import 'package:store/presentation/views/home/home_screen.dart';
 import 'pages_routes.dart';
 
 class StoreApp extends StatelessWidget {
@@ -10,12 +10,15 @@ class StoreApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
+      routes: routes,
+      initialRoute: HomeScreen.id,
       debugShowCheckedModeBanner: false,
-      // initialBinding: AppBindings(),
-      getPages: pagesRoutes,
-      theme: AppTheme.lightTheme(Get.locale),
-      darkTheme: AppTheme.darkTheme(Get.locale),
+      home: const HomeScreen(),
+
+      // theme: AppTheme.lightTheme(Get.locale),
+      // darkTheme: AppTheme.darkTheme(Get.locale),
+      // home: const HomeView(),
     );
   }
 }

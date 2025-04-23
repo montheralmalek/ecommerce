@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class FormWrap extends StatelessWidget {
   final double width;
@@ -150,7 +149,8 @@ class FormWrap extends StatelessWidget {
           actions.length,
           (index) => Container(
             constraints: BoxConstraints(maxWidth: width - 30),
-            child: actions[index].marginSymmetric(horizontal: 5),
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            child: actions[index],
           ),
         ),
       ),
@@ -162,7 +162,10 @@ class FormWrap extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(
         actions.length,
-        (index) => actions[index].marginSymmetric(vertical: 5),
+        (index) => Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          child: actions[index],
+        ),
       ),
     );
   }
