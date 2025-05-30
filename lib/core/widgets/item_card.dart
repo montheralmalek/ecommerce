@@ -1,15 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:store/core/utils/extensions/context_extensions.dart';
+import 'package:store/presentation/features/product_detail/cubit/product_detail_cubit.dart';
+import 'package:store/routing/routes.dart';
+import 'package:store/core/utils/errors/image_error_listener.dart';
 import 'package:store/core/utils/helpers/calculates_func.dart';
 import 'package:store/core/widgets/add_to_cart_button.dart';
-import 'package:store/domain/entities/product_entity.dart';
+import 'package:store/domain/domain_models/product.dart';
 
 class ItemCrad extends StatelessWidget {
   const ItemCrad({
     super.key,
     required this.product,
+    this.onTap,
     this.radius = 8,
     this.margin,
   }) : height = null,
@@ -17,26 +23,36 @@ class ItemCrad extends StatelessWidget {
   const ItemCrad.customSize({
     super.key,
     required this.product,
+    this.onTap,
     this.height = 200,
     this.width = 150,
     this.radius = 8,
     this.margin,
   });
-  final ProductEntity product;
+  final Product product;
   final double radius;
   final double? height;
   final double? width;
   final EdgeInsetsGeometry? margin;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // BlocProvider.of<GetCustomProductsCubit>(context).refereshData();
-        // BlocProvider.of<GetCustomProductsCubit>(context)
-        //     .getCustomProducts(category: product.category);
-        // Navigator.pushNamed(context, ProductView.id, arguments: product);
-      },
+      onTap:
+          onTap ??
+          () {
+            // BlocProvider.of<GetCustomProductsCubit>(context).refereshData();
+            // BlocProvider.of<GetCustomProductsCubit>(context)
+            //     .getCustomProducts(category: product.category);
+
+            // BlocProvider.of<>(context)
+            context.read<ProductDetailCubit>().loadProductDetail(product.id);
+            context.pushNamed(
+              AppRoutes.productDetails,
+              pathParameters: {'id': product.id.toString()},
+            );
+          },
       child: Container(
         height: height,
         width: width,
@@ -47,6 +63,7 @@ class ItemCrad extends StatelessWidget {
           border: Border.all(width: 0.5, color: Colors.grey),
         ),
         child: Column(
+          spacing: 5,
           children: [
             //---------- Start item image ------------
             Expanded(
@@ -58,39 +75,14 @@ class ItemCrad extends StatelessWidget {
                     product.discount != null && product.discount! > 0,
                 offset: const Offset(5, 7),
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                child: CachedNetworkImage(
+                child: CustomCachedNetworkImage(
                   imageUrl: product.imageUrl,
-                  imageBuilder:
-                      (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(radius),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                            colorFilter: const ColorFilter.mode(
-                              Colors.black12,
-                              BlendMode.darken,
-                            ),
-                          ),
-                        ),
-                      ),
-                  placeholder:
-                      (context, url) => Skeletonizer(
-                        enabled: url.isEmpty,
-                        child: Container(),
-                      ),
-                  errorWidget:
-                      (context, url, error) => Container(
-                        constraints: const BoxConstraints.expand(),
-                        child: const Icon(Icons.error_outline_rounded),
-                      ),
-                  // fit: BoxFit.cover,
+                  radius: radius,
                 ),
               ),
             ),
             //---------- End item image ------------------------
             //--------------------------------------------------
-            const Gap(5),
             //---------- Start item body -----------------------
             Container(
               padding: const EdgeInsets.all(5),
@@ -104,6 +96,7 @@ class ItemCrad extends StatelessWidget {
                 ),
               ),
               child: Column(
+                spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -112,20 +105,18 @@ class ItemCrad extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
-                  const Gap(8),
                   _PriceShowWidget(
                     discount: product.discount,
                     price: product.price,
                   ),
-                  const Gap(5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //** ------- Add To Cart Button ----------- */
                       AddToCartButton(
                         product: product,
-                        backgroundColor: Colors.grey.shade100,
                         boxShape: BoxShape.circle,
+                        iconColor: context.colorScheme.primary,
                         size: 40,
                       ),
                       RateProductShowWidget(rateValue: 4.5),
@@ -138,6 +129,67 @@ class ItemCrad extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomCachedNetworkImage extends StatelessWidget {
+  const CustomCachedNetworkImage({
+    super.key,
+    required this.imageUrl,
+    this.radius,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.height,
+  });
+
+  final String imageUrl;
+  final double? radius;
+  final BoxFit? fit;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      imageBuilder:
+          (context, imageProvider) => Container(
+            width: width,
+            height: height,
+            constraints: BoxConstraints.expand(
+              width: width ?? double.infinity,
+              height: height ?? double.infinity,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(radius ?? 0),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: fit,
+                colorFilter: const ColorFilter.mode(
+                  Colors.black12,
+                  BlendMode.darken,
+                ),
+              ),
+            ),
+          ),
+
+      placeholder: (context, url) => SizedBox.shrink(),
+
+      errorWidget:
+          (context, url, error) => Container(
+            constraints: const BoxConstraints.expand(),
+            width: width ?? double.infinity,
+            height: height ?? double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(radius ?? 0),
+            ),
+            child: Skeleton.ignore(
+              child: const Icon(Icons.error_outline_rounded),
+            ),
+          ),
+      errorListener: imageErrorListener,
+      // fit: BoxFit.cover,
     );
   }
 }
@@ -199,9 +251,9 @@ class RateProductShowWidget extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        spacing: 5,
         children: [
           Icon(Icons.star, color: Colors.amber, size: size / 2),
-          const Gap(5),
           Text(
             rateValue.toString(),
             style: TextStyle(fontSize: size / 3, color: Colors.grey.shade600),

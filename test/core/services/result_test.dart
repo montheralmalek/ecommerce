@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:store/core/errors/app_errors.dart';
-import 'package:store/core/services/result.dart';
+import 'package:store/core/utils/errors/app_errors.dart';
+import 'package:store/core/utils/result.dart';
 
 void main() {
   group('Result Type Tests', () {

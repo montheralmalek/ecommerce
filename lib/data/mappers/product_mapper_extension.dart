@@ -1,11 +1,11 @@
-import 'package:store/domain/entities/product_entity.dart';
+import 'package:store/domain/domain_models/product.dart';
 
-import '../models/product_model.dart';
+import '../services/remote/models/product_api_model.dart';
 
 // Map from ProductModel to ProductEntity
-extension ProductModelMapper on ProductModel {
-  ProductEntity toEntity() {
-    return ProductEntity.builder()
+extension ProductModelMapper on ProductApiModel {
+  Product toEntity() {
+    return Product.builder()
         .setId(id)
         .setTitle(title)
         .setPrice(price)
@@ -35,9 +35,9 @@ extension ProductModelMapper on ProductModel {
 }
 
 // Map from ProductEntity to ProductModel
-extension ProductEntityMapper on ProductEntity {
-  ProductModel toModel() {
-    return ProductModel(
+extension ProductEntityMapper on Product {
+  ProductApiModel toModel() {
+    return ProductApiModel(
       id: id,
       title: title,
       price: price,

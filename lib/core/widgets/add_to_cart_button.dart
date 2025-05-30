@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:store/domain/entities/product_entity.dart';
+import 'package:store/domain/domain_models/product.dart';
 
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
@@ -15,7 +14,7 @@ class AddToCartButton extends StatelessWidget {
     this.quantity = 1,
   });
   final int quantity;
-  final ProductEntity product;
+  final Product product;
   final double? size, iconSize;
   final Color? backgroundColor, iconColor;
   final BoxShape boxShape;

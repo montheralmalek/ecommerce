@@ -64,9 +64,10 @@ class CustomTextFormField extends StatelessWidget {
         initialValue: initialValue,
         validator: validator, //
         onSaved: onsave, //
-        onFieldSubmitted: nextFocusNode != null
-            ? (_) => nextFocusNode!.requestFocus()
-            : onFieldSubmitted,
+        onFieldSubmitted:
+            nextFocusNode != null
+                ? (_) => nextFocusNode!.requestFocus()
+                : onFieldSubmitted,
         onChanged: onChenged,
         onEditingComplete: onEditingComplete,
         onTap: onTap,
@@ -83,7 +84,8 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon: prefixicon,
           suffixIcon: suffixicon,
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(radius))),
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
+          ),
           hintText: hintText,
           label: Text(labelText),
         ),

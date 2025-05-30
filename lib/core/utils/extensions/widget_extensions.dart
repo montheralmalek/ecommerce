@@ -1,8 +1,15 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 extension WidgetExtensionX on Widget {
   Widget get toSliver {
     return SliverToBoxAdapter(child: this);
+  }
+
+  Widget withMaterial(bool condition) {
+    if (condition) {
+      return Material(type: MaterialType.transparency, child: this);
+    }
+    return this;
   }
 }
 

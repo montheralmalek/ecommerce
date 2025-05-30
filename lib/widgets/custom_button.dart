@@ -20,8 +20,8 @@ class CustomButton extends StatelessWidget {
     this.broderRadius,
     this.width,
     this.padding,
-  })  : icon = null,
-        _variant = _ButtonVariant.filled;
+  }) : icon = null,
+       _variant = _ButtonVariant.filled;
   const CustomButton.tonal({
     super.key,
     this.onPressed,
@@ -30,8 +30,8 @@ class CustomButton extends StatelessWidget {
     this.broderRadius,
     this.width,
     this.padding,
-  })  : icon = null,
-        _variant = _ButtonVariant.tonal;
+  }) : icon = null,
+       _variant = _ButtonVariant.tonal;
   const CustomButton.icon({
     super.key,
     required this.onPressed,
@@ -62,7 +62,7 @@ class CustomButton extends StatelessWidget {
           flex: expanded ? 1 : 0,
           fit: FlexFit.tight,
           child: _getButton(),
-        )
+        ),
       ],
     );
   }
@@ -82,11 +82,13 @@ class CustomButton extends StatelessWidget {
 
   ButtonStyle get _buttonStyle {
     return FilledButton.styleFrom(
-        shape: RoundedRectangleBorder(
-            borderRadius: broderRadius ?? BorderRadius.circular(10)),
-        minimumSize: const Size.square(45),
-        padding: padding,
-        fixedSize: width != null ? Size(width!, 48) : null);
+      shape: RoundedRectangleBorder(
+        borderRadius: broderRadius ?? BorderRadius.circular(10),
+      ),
+      minimumSize: const Size.square(45),
+      padding: padding,
+      fixedSize: width != null ? Size(width!, 48) : null,
+    );
   }
 
   Widget _filledButton() {
