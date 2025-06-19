@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:store/domain/domain_models/product.dart';
+import 'package:store/widgets/widgets.dart';
 
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
     super.key,
     required this.product,
-    this.size,
+    this.minimumHeight,
     this.iconSize,
     this.backgroundColor,
     this.boxShape = BoxShape.rectangle,
     this.borderRadius,
     this.iconColor,
     this.quantity = 1,
+    this.expanded = true,
   });
   final int quantity;
   final Product product;
-  final double? size, iconSize;
+  final double? minimumHeight, iconSize;
   final Color? backgroundColor, iconColor;
   final BoxShape boxShape;
   final BorderRadiusGeometry? borderRadius;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.zero,
-      height: size,
-      width: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        shape: boxShape,
-        color: backgroundColor,
-      ),
-      child: IconButton(
-        iconSize: iconSize,
-        padding: EdgeInsets.zero,
-        color: iconColor,
-        icon: const Icon(Icons.add_shopping_cart_outlined),
-        onPressed: () {
-          // BlocProvider.of<CartCubit>(context)
-          //     .addItem(product: product, quantity: quantity);
-          // addToCartDialog(context, product, quantity);
-        },
-      ),
+    return CustomFilledButton.tonalIcon(
+      expanded: expanded,
+      minimumHeight: minimumHeight ?? 0,
+      broderRadius: borderRadius ?? BorderRadius.circular(8.0),
+      label: 'add to cart',
+      onPressed: () {
+        // BlocProvider.of<CartCubit>(context)
+        //     .addItem(product: product, quantity: quantity);
+        // addToCartDialog(context, product, quantity);
+      },
+      icon: const Icon(Icons.add_shopping_cart_outlined),
     );
   }
 }

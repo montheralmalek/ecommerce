@@ -13,6 +13,7 @@ class ProductApiModel {
   final int? discount;
   final bool isPopular;
   final bool isOnSale;
+  final RatingApiModel? rating;
 
   ProductApiModel({
     required this.id,
@@ -27,6 +28,7 @@ class ProductApiModel {
     this.model,
     this.isOnSale = false,
     this.isPopular = false,
+    this.rating,
   });
 
   factory ProductApiModel.fromJson(jsonData) {
@@ -44,6 +46,10 @@ class ProductApiModel {
         model: jsonData['model'],
         isOnSale: jsonData['onSale'] ?? false,
         isPopular: jsonData['popular'] ?? false,
+        rating:
+            jsonData['rating'] != null
+                ? RatingApiModel.fromJson(jsonData['rating'])
+                : null,
       );
     } on Exception catch (e) {
       throw ValidationException('Product model argument error');
@@ -63,5 +69,24 @@ class ProductApiModel {
       'discount': discount,
       'model': model,
     };
+  }
+}
+
+class RatingApiModel {
+  final double rate;
+  final int count;
+
+  RatingApiModel({required this.rate, required this.count});
+
+  factory RatingApiModel.fromJson(jsonData) {
+    try {
+      return RatingApiModel(rate: jsonData['rate'], count: jsonData['count']);
+    } on Exception catch (e) {
+      throw ValidationException('Rating model argument error');
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'rate': rate, 'count': count};
   }
 }

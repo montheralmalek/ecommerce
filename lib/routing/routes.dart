@@ -24,6 +24,7 @@ abstract final class AppRoutes {
   static const String wishlist = '/wishlist';
   static const String orderHistory = '/order-history';
   static const String orderDetails = '/order-details';
+  static const String productRating = '/product-rating';
   // static String productDetailsWithId(int id) => '/$productDetailsRelative/$id';
 
   // Returns all the routes as a list

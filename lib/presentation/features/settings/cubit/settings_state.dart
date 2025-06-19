@@ -4,12 +4,17 @@ class SettingState {
   final ThemeMode themeMode;
   final Locale locale;
   final bool notificationsEnabled;
+  @Deprecated('Use extension themeMode.isDark instead.')
+  final bool isDarkMode;
+  @Deprecated('Use extension themeMode.isSystem instead.')
+  final bool isSystemMode;
 
   const SettingState({
     required this.themeMode,
     required this.locale,
     required this.notificationsEnabled,
-  });
+  }) : isDarkMode = themeMode == ThemeMode.dark,
+       isSystemMode = themeMode == ThemeMode.system;
 
   factory SettingState.initial() {
     return const SettingState(

@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:store/core/themes/dimens.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
+import 'package:store/core/widgets/add_to_cart_button.dart';
 import 'package:store/core/widgets/item_card.dart';
 import 'package:store/domain/domain_models/product.dart';
 import 'package:store/presentation/features/product_detail/cubit/product_detail_cubit.dart';
+import 'package:store/presentation/features/product_detail/widgets/product_rating_detail_widget.dart';
 import 'package:store/widgets/custom_error_widget.dart';
+import 'package:store/widgets/expandable_text.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const String id = '/product_detail_screen';
@@ -15,82 +19,204 @@ class ProductDetailScreen extends StatelessWidget {
   final int productId;
   @override
   Widget build(BuildContext context) {
-    final product = ModalRoute.of(context)?.settings.arguments;
     return PlatformScaffold(
-      // appBar: PlatformAppBar(title: Text('Product Details')),
+      appBar: PlatformAppBar(
+        title: Text('Product Details'),
+        cupertino:
+            (context, platform) => CupertinoNavigationBarData(
+              previousPageTitle: 'Back',
+              automaticBackgroundVisibility: false,
+            ),
+      ),
+
       body: BlocBuilder<ProductDetailCubit, ProductDetailState>(
         builder: (context, state) {
           if (state is ProductDetailInitial) {
             context.read<ProductDetailCubit>().loadProductDetail(productId);
           }
-          if (state is ProductDetailLoading) {
-            return Center(
-              child: Skeletonizer(
-                enabled: true,
-                child: _buildProductDetail(context),
-              ),
-            );
+          if (state is ProductDetailError) {
+            return CustomErrorWidget(message: state.message);
           }
-          return state is ProductDetailLoaded
-              ? _buildProductDetail(context, state.product)
-              : state is ProductDetailError
-              ? CustomErrorWidget(message: state.message)
-              : const SizedBox.shrink();
+          final product = state is ProductDetailLoaded ? state.product : null;
+          return Skeletonizer(
+            enabled: state is ProductDetailLoading,
+            child: Column(
+              children: [
+                Expanded(child: _buildProductDetail(context, product)),
+                if (product != null && _isAvailableInStock(product))
+                  Card(
+                    margin: EdgeInsets.zero,
+                    color: context.colorScheme.surface,
+                    shape: RoundedRectangleBorder(),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Dimens.of(context).paddingScreenHorizontal,
+                        vertical: Dimens.of(context).paddingScreenVertical,
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: AddToCartButton(
+                          product: product,
+                          minimumHeight: 48,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          );
         },
       ),
     );
   }
 
+  bool _isAvailableInStock(Product product) {
+    // return product.stock > 0;
+    return true; // Assuming all products are available in stock for this example
+  }
+
   Widget _buildProductDetail(BuildContext context, [Product? product]) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        PlatformSliverAppBar(
-          title: const Text(
-            'Product Details',
-            // style: TextStyle(color: context.colorScheme.primary),
+    final starRating = [0.6, 0.25, 0.1, 0.05, 0.0];
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: Dimens.of(context).paddingScreenVertical,
+      ),
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 250,
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  CustomCachedNetworkImage(
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: 250,
+                    imageUrl: product?.imageUrl ?? '',
+                  ),
+                  Container(
+                    color: context.theme.hoverColor,
+                    padding: EdgeInsets.all(
+                      Dimens.of(context).paddingScreenHorizontal / 2,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton.filledTonal(
+                          onPressed: () {},
+                          icon: Icon(Icons.favorite_border),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
 
-          material: (context, platform) {
-            return MaterialSliverAppBarData(
-              expandedHeight: 250,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: CustomCachedNetworkImage(
-                  height: 250,
-                  imageUrl:
-                      product?.imageUrl ?? 'https://via.placeholder.com/150',
-                ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimens.of(context).paddingScreenHorizontal,
               ),
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoSliverAppBarData(
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(250),
-                child: CustomCachedNetworkImage(
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 250,
-                  imageUrl: product?.imageUrl ?? '',
-                ),
-              ),
-            );
-          },
-        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 10.0,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: Dimens.of(context).paddingScreenVertical / 2,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product?.brand ?? 'Brand',
+                          style: context.textTheme.titleMedium?.copyWith(
+                            color: context.theme.hintColor,
+                          ),
+                        ),
+                        BriefRatingWidget(rateValue: 4.4, reviewsCount: 128),
+                      ],
+                    ),
+                  ),
 
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Product Name', style: TextStyle(fontSize: 24)),
+                  //
+                  Text(
+                    product?.title ?? 'Product Name',
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  //
+                  RawChip(
+                    label: const Text('Available in stock'),
+                    showCheckmark: false,
+                    selected: false,
+                    selectedColor: context.colorScheme.primary.withAlpha(100),
+                    // color: WidgetStateMapper({
+                    //   WidgetState.selected: context.colorScheme.primary,
+                    // }),
+                  ),
+                  //
+                  Skeleton.unite(
+                    borderRadius: BorderRadius.zero,
+                    child: SectionWidget(
+                      title: PlatformText('Product Description'),
+                      child: ExpandableText(
+                        product?.description ??
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                      ),
+                    ),
+                  ),
+
+                  Skeleton.leaf(
+                    child: ProductRatingDetailWidget(
+                      starRatings: starRating,
+                      rateValue: _calculateAverageRating(starRating),
+                      reviewsCount: 128,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  double _calculateAverageRating(List<double> ratings) {
+    double starRating = 0.0;
+    for (int i = 0; i < ratings.length; i++) {
+      var rating = ratings[i];
+      starRating += rating * (ratings.length - i);
+    }
+    return starRating;
+  }
+}
+
+class SectionWidget extends StatelessWidget {
+  const SectionWidget({super.key, this.title, this.child, this.spacing = 10.0});
+  final Widget? title;
+  final Widget? child;
+  final double spacing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: spacing,
+      children: [
+        DefaultTextStyle.merge(
+          style: context.textTheme.titleLarge,
+          child: title ?? SizedBox.shrink(),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Product Description', style: TextStyle(fontSize: 16)),
-          ),
-        ),
+        child ?? SizedBox.shrink(),
       ],
     );
   }

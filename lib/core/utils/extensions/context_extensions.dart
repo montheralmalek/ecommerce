@@ -75,8 +75,10 @@ extension ContextExtensions on BuildContext {
     );
   }
 
-  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
-  bool get isLightMode => Theme.of(this).brightness == Brightness.light;
+  bool get isDarkMode =>
+      MediaQuery.of(this).platformBrightness == Brightness.dark;
+  bool get isLightMode =>
+      MediaQuery.of(this).platformBrightness == Brightness.light;
 
   /// Navigate to named location.
   // void toNamed(

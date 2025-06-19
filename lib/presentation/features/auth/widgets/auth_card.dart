@@ -110,7 +110,7 @@ class AuthCard extends StatelessWidget {
   ///----------------------------------------------
   ///------------------ submit button ---------------------------
   Widget _buildSubmitButtonWidget(BuildContext context) {
-    return CustomButton.icon(
+    return CustomFilledButton.icon(
       label: submitText,
       icon: submitIcon,
       onPressed: onSubmit,
@@ -121,7 +121,7 @@ class AuthCard extends StatelessWidget {
   ///------------------ cancel button ---------------------------
   Widget _buildCancelButtonWidget(BuildContext context) {
     if (onCancel == null) return const SizedBox();
-    return CustomButton.tonalIcon(
+    return CustomFilledButton.tonalIcon(
       label: cancelText,
       icon: cancelIcon,
       onPressed: onCancel,

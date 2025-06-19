@@ -18,19 +18,8 @@ extension ProductModelMapper on ProductApiModel {
         .setModel(model)
         .setIsPopular(isPopular)
         .setIsOnSale(isOnSale)
+        .setRating(rating?.toEntity())
         .build();
-    // ProductEntity(
-    //   id: id,
-    //   title: title,
-    //   price: price,
-    //   description: description,
-    //   category: category,
-    //   imageUrl: image,
-    //   brand: brand,
-    //   color: color,
-    //   discount: discount,
-    //   model: model,
-    // );
   }
 }
 
@@ -49,5 +38,11 @@ extension ProductEntityMapper on Product {
       discount: discount,
       model: model,
     );
+  }
+}
+
+extension ProductRatingMapper on RatingApiModel {
+  Rating toEntity() {
+    return Rating(rateValue: rate, reviewsCount: count);
   }
 }

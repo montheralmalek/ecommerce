@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
-import 'package:store/data/repositories/auth_repository.dart';
 import 'package:store/presentation/features/home/home_screen.dart';
 import 'package:store/presentation/features/product_detail/widgets/product_detail_screen.dart';
+import 'package:store/presentation/features/product_detail/widgets/product_feedback_screen.dart';
 import 'package:store/presentation/features/settings/widgets/settings_screen.dart';
 import 'package:store/widgets/widgets.dart';
 
@@ -14,88 +13,121 @@ import '../presentation/features/auth/widgets/login_screen.dart';
 import 'routes.dart';
 
 final _log = Logger('Router');
-GoRouter router([AuthRepository? authRepository]) {
-  _log.info('Start router initialization');
-  authRepository ??= getIt<AuthRepository>();
-  return GoRouter(
-    initialLocation: AppRoutes.initial,
-    debugLogDiagnostics: true,
+final GoRouter router = GoRouter(
+  initialLocation: AppRoutes.initial,
+  debugLogDiagnostics: true,
 
-    // redirect: (context, state) async {
-    //   // if the user is not logged in, they need to login
-    //   final loggedIn = await authRepository.isAuthenticated;
-    //   final loggingIn = state.matchedLocation == AppRoutes.login;
-    //   if (!loggedIn) {
-    //     log.info(
-    //       'Redirecting from ${state.matchedLocation} to ${AppRoutes.login}',
-    //     );
-    //     return AppRoutes.login;
-    //   }
+  // redirect: (context, state) async {
+  //   // if the user is not logged in, they need to login
+  //   final loggedIn = await authRepository.isAuthenticated;
+  //   final loggingIn = state.matchedLocation == AppRoutes.login;
+  //   if (!loggedIn) {
+  //     log.info(
+  //       'Redirecting from ${state.matchedLocation} to ${AppRoutes.login}',
+  //     );
+  //     return AppRoutes.login;
+  //   }
 
-    //   // if the user is logged in but still on the login page, send them to
-    //   // the home page
-    //   if (loggingIn) {
-    //     log.info(
-    //       'Redirecting from ${state.matchedLocation} to ${AppRoutes.home}',
-    //     );
-    //     return AppRoutes.home;
-    //   }
+  //   // if the user is logged in but still on the login page, send them to
+  //   // the home page
+  //   if (loggingIn) {
+  //     log.info(
+  //       'Redirecting from ${state.matchedLocation} to ${AppRoutes.home}',
+  //     );
+  //     return AppRoutes.home;
+  //   }
 
-    //   // no need to redirect at all
-    //   return null;
-    // },
-    errorPageBuilder: _errorPage,
+  //   // no need to redirect at all
+  //   return null;
+  // },
+  errorPageBuilder: _errorPage,
 
-    routes: [
-      GoRoute(
-        name: AppRoutes.home,
-        path: AppRoutes.home,
-        pageBuilder: (context, state) {
-          return platformPage(context: context, child: const HomeScreen());
-        },
-      ),
-      GoRoute(
-        name: AppRoutes.login,
-        path: AppRoutes.login,
-        pageBuilder: (context, state) {
-          return platformPage(context: context, child: const LoginScreen());
-        },
-      ),
-      GoRoute(
-        name: AppRoutes.productDetails,
-        path: '${AppRoutes.productDetails}/:id',
+  routes: [
+    GoRoute(
+      name: AppRoutes.home,
+      path: AppRoutes.home,
+      builder: (context, state) {
+        _log.info('Navigating to Home Screen');
+        return const HomeScreen();
+      },
+      // pageBuilder: (context, state) {
+      //   return platformPage(context: context, child: const HomeScreen());
+      // },
+    ),
+    GoRoute(
+      name: AppRoutes.login,
+      path: AppRoutes.login,
+      builder: (context, state) {
+        _log.info('Navigating to Login Screen');
+        return const LoginScreen();
+      },
+      // pageBuilder: (context, state) {
+      //   return platformPage(context: context, child: const LoginScreen());
+      // },
+    ),
+    GoRoute(
+      name: AppRoutes.productDetails,
+      path: '${AppRoutes.productDetails}/:id',
+      builder: (context, state) {
+        _log.info(
+          'Navigating to Product Detail Screen with id: ${state.pathParameters['id']}',
+        );
 
-        pageBuilder: (context, state) {
-          // final product = state.extra as Product;
-          // final id = product.id;
-          final id = int.parse(state.pathParameters['id']!);
-          return platformPage(
-            context: context,
-            child: ProductDetailScreen(productId: id),
-          );
-        },
-      ),
+        final id = int.parse(state.pathParameters['id'] ?? '0');
+        return ProductDetailScreen(productId: id);
+      },
+      // pageBuilder: (context, state) {
+      //   // final product = state.extra as Product;
+      //   // final id = product.id;
+      //   final id = int.parse(state.pathParameters['id']!);
+      //   return platformPage(
+      //     context: context,
+      //     child: ProductDetailScreen(productId: id),
+      //   );
+      // },
+    ),
 
-      GoRoute(
-        name: AppRoutes.settings,
-        path: AppRoutes.settings,
-        pageBuilder: (context, state) {
-          return platformPage(context: context, child: const SettingsScreen());
-        },
-      ),
-      GoRoute(
-        name: AppRoutes.about,
-        path: AppRoutes.about,
-        pageBuilder: (context, state) {
-          return platformPage(
-            context: context,
-            child: UnImplementedWidget(key: const Key('about_screen')),
-          );
-        },
-      ),
-    ],
-  );
-}
+    GoRoute(
+      name: AppRoutes.settings,
+      path: AppRoutes.settings,
+      builder: (context, state) {
+        _log.info('Navigating to Settings Screen');
+        return const SettingsScreen();
+      },
+      // pageBuilder: (context, state) {
+      //   return platformPage(context: context, child: const SettingsScreen());
+      // },
+    ),
+    GoRoute(
+      name: AppRoutes.about,
+      path: AppRoutes.about,
+      builder: (context, state) {
+        _log.info('Navigating to About Screen');
+        return const UnImplementedWidget();
+      },
+      // pageBuilder: (context, state) {
+      //   return platformPage(
+      //     context: context,
+      //     child: UnImplementedWidget(key: const Key('about_screen')),
+      //   );
+      // },
+    ),
+    GoRoute(
+      name: AppRoutes.productRating,
+      path: AppRoutes.productRating,
+      // builder: (context, state) {
+      //   _log.info('Navigating to Product Rating Screen');
+      //   return const ProductRatingView();
+      // },
+      pageBuilder: (context, state) {
+        return platformPage(
+          context: context,
+          child: const ProductFeedbackScreen(),
+        );
+      },
+    ),
+  ],
+);
 
 Page _errorPage(BuildContext context, GoRouterState state) {
   _log.severe('Error: ${state.error}');

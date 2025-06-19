@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -28,41 +29,91 @@ class HomeScreen extends StatelessWidget {
         trailingActions: _appBarActionsList,
         // leading: _homeDrawerButton(context),
       ),
-      material:
-          (context, platform) => MaterialScaffoldData(
-            drawer: Drawer(
-              child: ListView(
-                children: [
-                  DrawerHeader(
-                    child: Center(
-                      child: Text(
-                        'Welcome to Home',
-                        style: context.textTheme.headlineMedium,
-                      ),
-                    ),
-                  ),
-                  // NavigationDrawer(children: children)
-                  ListTile(
-                    title: Text('Settings'),
-                    onTap: () {
-                      // Close the drawer first
-                      Navigator.of(context).pop();
 
-                      context.push(AppRoutes.settings);
-                    },
-                  ),
-                  ListTile(
-                    title: Text('About'),
-                    onTap: () {
-                      // context.pushNamed(AppRoutes.about);
-                    },
-                  ),
-                ],
+      material:
+          (context, platform) =>
+              MaterialScaffoldData(drawer: _buildMaterialDrawer(context)),
+      cupertino:
+          (context, platform) => CupertinoPageScaffoldData(
+            navigationBar: CupertinoNavigationBar(
+              middle: Text('Home'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: _appBarActionsList,
               ),
+              leading: _homeDrawerButton(context),
             ),
           ),
 
       body: const BuildHomeSections(),
+    );
+  }
+
+  void _openNavigation(BuildContext context) {
+    if (isMaterial(context)) {
+      Scaffold.of(context).openDrawer();
+    } else {
+      _showCupertinoMenu(context);
+    }
+  }
+
+  Widget _buildMaterialDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            child: Center(
+              child: Text(
+                'Welcome to Home',
+                style: context.textTheme.headlineMedium,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
+            onTap: () {
+              Navigator.pop(context);
+              // Navigate to settings
+              context.push(AppRoutes.settings);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCupertinoMenu(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder:
+          (context) => CupertinoActionSheet(
+            title: const Text('Menu'),
+            actions: [
+              CupertinoActionSheetAction(
+                onPressed: () {
+                  context.pop();
+                  // Navigate to settings
+                  context.push(AppRoutes.settings);
+                },
+                child: const Text('Settings'),
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+          ),
+    );
+  }
+
+  Widget _homeDrawerButton(BuildContext context) {
+    return PlatformIconButton(
+      icon: Icon(CupertinoIcons.line_horizontal_3),
+      onPressed: () {
+        _openNavigation(context);
+      },
     );
   }
 
@@ -162,39 +213,6 @@ class RefreshHomeButton extends StatelessWidget {
       onPressed: () {
         // context.push(AppRoutes.about);
         BlocProvider.of<HomeCubit>(context).retry();
-      },
-    );
-  }
-}
-
-class SwitchThemeMode extends StatelessWidget {
-  const SwitchThemeMode({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Switch.adaptive(
-      thumbColor: WidgetStateColor.fromMap({
-        WidgetState.any: context.colorScheme.onSecondary,
-      }),
-      trackOutlineWidth: WidgetStateMapper({WidgetState.any: 0}),
-      trackColor: WidgetStateMapper({
-        WidgetState.any: context.colorScheme.secondary,
-      }),
-      thumbIcon: WidgetStateMapper({
-        WidgetState.selected: Icon(
-          Icons.light_mode,
-          color: context.colorScheme.secondary,
-        ),
-        WidgetState.any: Icon(
-          Icons.dark_mode,
-          color: context.colorScheme.secondary,
-        ),
-      }),
-
-      value: PlatformTheme.of(context)?.isDark ?? false,
-      onChanged: (value) {
-        PlatformTheme.of(context)?.themeMode =
-            value ? ThemeMode.dark : ThemeMode.light;
       },
     );
   }

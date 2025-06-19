@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
@@ -100,6 +101,11 @@ class ItemCrad extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if (product.brand != null)
+                    Text(
+                      product.brand!,
+                      style: TextStyle(color: context.theme.hintColor),
+                    ),
                   Text(
                     product.title,
                     overflow: TextOverflow.ellipsis,
@@ -113,15 +119,15 @@ class ItemCrad extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //** ------- Add To Cart Button ----------- */
-                      AddToCartButton(
-                        product: product,
-                        boxShape: BoxShape.circle,
-                        iconColor: context.colorScheme.primary,
-                        size: 40,
+                      PlatformIconButton(
+                        icon: Icon(context.platformIcons.favoriteOutline),
+                        padding: EdgeInsets.zero,
                       ),
-                      RateProductShowWidget(rateValue: 4.5),
+
+                      BriefRatingWidget(rateValue: 4.5),
                     ],
                   ),
+                  AddToCartButton(product: product),
                 ],
               ),
             ),
@@ -151,45 +157,53 @@ class CustomCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      imageBuilder:
-          (context, imageProvider) => Container(
-            width: width,
-            height: height,
-            constraints: BoxConstraints.expand(
-              width: width ?? double.infinity,
-              height: height ?? double.infinity,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius ?? 0),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: fit,
-                colorFilter: const ColorFilter.mode(
-                  Colors.black12,
-                  BlendMode.darken,
+    return Skeleton.replace(
+      width: width ?? double.infinity,
+      height: height ?? double.infinity,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          imageBuilder:
+              (context, imageProvider) => Container(
+                width: width,
+                height: height,
+                constraints: BoxConstraints.expand(
+                  width: width ?? double.infinity,
+                  height: height ?? double.infinity,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(radius ?? 0),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: fit,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.black12,
+                      BlendMode.darken,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
 
-      placeholder: (context, url) => SizedBox.shrink(),
+          placeholder: (context, url) => SizedBox.shrink(),
 
-      errorWidget:
-          (context, url, error) => Container(
-            constraints: const BoxConstraints.expand(),
-            width: width ?? double.infinity,
-            height: height ?? double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius ?? 0),
-            ),
-            child: Skeleton.ignore(
-              child: const Icon(Icons.error_outline_rounded),
-            ),
-          ),
-      errorListener: imageErrorListener,
-      // fit: BoxFit.cover,
+          errorWidget:
+              (context, url, error) => Container(
+                alignment: Alignment.center,
+                constraints: const BoxConstraints.expand(),
+
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(radius ?? 0),
+                ),
+                child: Skeleton.ignore(
+                  child: const Icon(Icons.error_outline_rounded),
+                ),
+              ),
+          errorListener: imageErrorListener,
+          // fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
@@ -224,42 +238,38 @@ class _PriceShowWidget extends StatelessWidget {
   }
 }
 
-class RateProductShowWidget extends StatelessWidget {
-  const RateProductShowWidget({
+class BriefRatingWidget extends StatelessWidget {
+  const BriefRatingWidget({
     super.key,
     required this.rateValue,
+    this.reviewsCount,
     this.backgroundColor,
-    this.size = 30,
+    this.size = 18,
     this.boxShape = BoxShape.circle,
   });
+
+  /// review count
   final double rateValue;
+  final int? reviewsCount;
   final Color? backgroundColor;
+
   final double size;
   final BoxShape boxShape;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        // shape: boxShape,
-        borderRadius:
-            boxShape == BoxShape.circle
-                ? BorderRadius.circular(size / 2)
-                : BorderRadius.circular(0),
-        border: Border.all(color: Colors.grey.shade300, width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 5,
-        children: [
-          Icon(Icons.star, color: Colors.amber, size: size / 2),
-          Text(
-            rateValue.toString(),
-            style: TextStyle(fontSize: size / 3, color: Colors.grey.shade600),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 5,
+      children: [
+        Icon(Icons.star_rate_rounded, color: Colors.amber, size: size),
+        Text(
+          '$rateValue${reviewsCount != null ? ' ($reviewsCount Reviews)' : ''}',
+          style: TextStyle(
+            fontSize: size * 0.8,
+            color: context.theme.disabledColor,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
