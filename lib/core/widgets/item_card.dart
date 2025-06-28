@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
-import 'package:store/presentation/features/product_detail/cubit/product_detail_cubit.dart';
+import 'package:store/presentation/features/product/cubits/getProductByIdCubit/product_detail_cubit.dart';
 import 'package:store/routing/routes.dart';
-import 'package:store/core/utils/errors/image_error_listener.dart';
+import 'package:store/core/utils/errors/image_error_functions.dart';
 import 'package:store/core/utils/helpers/calculates_func.dart';
 import 'package:store/core/widgets/add_to_cart_button.dart';
 import 'package:store/domain/domain_models/product.dart';
@@ -119,15 +118,15 @@ class ItemCrad extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       //** ------- Add To Cart Button ----------- */
-                      PlatformIconButton(
-                        icon: Icon(context.platformIcons.favoriteOutline),
-                        padding: EdgeInsets.zero,
-                      ),
-
+                      // PlatformIconButton(
+                      //   icon: Icon(context.platformIcons.favoriteOutline,),
+                      //   padding: EdgeInsets.zero,
+                      // ),
+                      AddToCartButton(product: product, expanded: false),
                       BriefRatingWidget(rateValue: 4.5),
                     ],
                   ),
-                  AddToCartButton(product: product),
+                  // AddToCartButton(product: product, label: 'Add To Cart'),
                 ],
               ),
             ),
@@ -188,18 +187,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
 
           placeholder: (context, url) => SizedBox.shrink(),
 
-          errorWidget:
-              (context, url, error) => Container(
-                alignment: Alignment.center,
-                constraints: const BoxConstraints.expand(),
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(radius ?? 0),
-                ),
-                child: Skeleton.ignore(
-                  child: const Icon(Icons.error_outline_rounded),
-                ),
-              ),
+          errorWidget: imageErrorWidget,
           errorListener: imageErrorListener,
           // fit: BoxFit.cover,
         ),

@@ -1,5 +1,5 @@
 import 'package:store/domain/domain_models/product.dart';
-import 'package:store/presentation/features/home/cubits/getProductsCubit/product_cubit.dart';
+import 'package:store/presentation/features/product/cubits/getProductsCubit/product_cubit.dart';
 
 class ProductViewModel {
   final ProductCubit productCubit;

@@ -8,7 +8,7 @@ class ItemListViewHorizontalBuilder extends StatelessWidget {
   const ItemListViewHorizontalBuilder({
     super.key,
     required this.products,
-    this.itemHeight = 350,
+    this.itemHeight = 300,
     this.itemWidth = 150,
     this.padding = EdgeInsets.zero,
     this.spacing = 10,
@@ -31,7 +31,7 @@ class ItemListViewHorizontalBuilder extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (title != null) PlatformListTile(title: title!, trailing: trailing),
+        // if (title != null) PlatformListTile(title: title!, trailing: trailing),
         SizedBox(
           height: itemHeight,
           child: ListView.builder(

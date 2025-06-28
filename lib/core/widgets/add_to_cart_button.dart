@@ -9,6 +9,7 @@ class AddToCartButton extends StatelessWidget {
     this.minimumHeight,
     this.iconSize,
     this.backgroundColor,
+    this.label,
     this.boxShape = BoxShape.rectangle,
     this.borderRadius,
     this.iconColor,
@@ -22,6 +23,7 @@ class AddToCartButton extends StatelessWidget {
   final BoxShape boxShape;
   final BorderRadiusGeometry? borderRadius;
   final bool expanded;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class AddToCartButton extends StatelessWidget {
       expanded: expanded,
       minimumHeight: minimumHeight ?? 0,
       broderRadius: borderRadius ?? BorderRadius.circular(8.0),
-      label: 'add to cart',
+      label: label,
       onPressed: () {
         // BlocProvider.of<CartCubit>(context)
         //     .addItem(product: product, quantity: quantity);

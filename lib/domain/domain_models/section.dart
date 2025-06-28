@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:store/domain/domain_models/banner.dart';
+import 'package:store/domain/domain_models/catgory.dart';
+import 'package:store/domain/domain_models/product.dart';
 
+///
 enum HOMESECTIONTYPE {
   bannerSlider,
   itemsGrid,
@@ -8,65 +11,106 @@ enum HOMESECTIONTYPE {
   categoriesGrid,
 }
 
-class Section<T> {
-  final HOMESECTIONTYPE type;
-  final String title;
-  final String? subtitle;
-  final List<T> data;
-  final String? backgroundColor;
-  final String? textColor;
-  final String? actionText;
-  final String? targetId;
-
-  Section({
-    required this.type,
-    required this.title,
-    this.subtitle,
-    required this.data,
-    this.backgroundColor,
-    this.textColor,
-    this.actionText,
-    this.targetId,
-  });
-  factory Section.bannerSlider(List<T> banners) => Section(
-    type: HOMESECTIONTYPE.bannerSlider,
-    title: 'Banner Slider',
-    data: banners,
-  );
-
-  factory Section.itemsGrid(String title, List<T> items) =>
-      Section(type: HOMESECTIONTYPE.itemsGrid, title: title, data: items);
-
-  factory Section.horizontalItems(String title, List<T> items) =>
-      Section(type: HOMESECTIONTYPE.horizontalItems, title: title, data: items);
-
-  factory Section.horizontalCategories(String title, List<T> categories) =>
-      Section(
-        type: HOMESECTIONTYPE.horizontalCategories,
-        title: title,
-        data: categories,
-      );
-
-  factory Section.categoriesGrid(String title, List<T> categories) => Section(
-    type: HOMESECTIONTYPE.categoriesGrid,
-    title: title,
-    data: categories,
-  );
-  factory Section.empty() =>
-      Section(type: HOMESECTIONTYPE.bannerSlider, title: '', data: []);
-
-  factory Section.loading(HOMESECTIONTYPE type, List<T> data) => Section(
-    type: type,
-    title: 'Loading...',
-    data: data,
-    backgroundColor: null,
-    textColor: null,
-    actionText: null,
-    targetId: null,
-  );
+///
+abstract class HomeSectionI<T> {
+  HOMESECTIONTYPE get type;
+  String? get title;
+  String? get subtitle;
+  List<T> get data;
+  String? get backgroundColor;
+  String? get textColor;
+  String? get actionText;
+  String? get targetId;
+  const HomeSectionI();
 }
 
-extension SectionEntityX on Section {
+///
+final class BannerSliderSection implements HomeSectionI<BannerModel> {
+  @override
+  final List<BannerModel> data;
+
+  const BannerSliderSection({required this.data});
+  @override
+  HOMESECTIONTYPE get type => HOMESECTIONTYPE.bannerSlider;
+  @override
+  String? get title => null;
+  @override
+  String? get subtitle => null;
+  @override
+  String? get backgroundColor => null;
+  @override
+  String? get textColor => null;
+  @override
+  String? get actionText => null;
+  @override
+  String? get targetId => null;
+}
+
+///
+final class ItemsGridSection implements HomeSectionI<Product> {
+  @override
+  final String? title;
+  @override
+  final List<Product> data;
+
+  ItemsGridSection({required this.title, required this.data});
+  @override
+  HOMESECTIONTYPE get type => HOMESECTIONTYPE.itemsGrid;
+  @override
+  String? get subtitle => null;
+  @override
+  String? get backgroundColor => null;
+  @override
+  String? get textColor => null;
+  @override
+  String? get actionText => null;
+  @override
+  String? get targetId => null;
+}
+
+///
+final class HorizontalItemsSection implements HomeSectionI<Product> {
+  @override
+  final String? title;
+  @override
+  final List<Product> data;
+  HorizontalItemsSection({required this.title, required this.data});
+  @override
+  HOMESECTIONTYPE get type => HOMESECTIONTYPE.horizontalItems;
+  @override
+  String? get subtitle => null;
+  @override
+  String? get backgroundColor => null;
+  @override
+  String? get textColor => null;
+  @override
+  String? get actionText => 'See All';
+  @override
+  String? get targetId => null;
+}
+
+///
+final class HorizontalCategoriesSection implements HomeSectionI<Category> {
+  @override
+  final String? title;
+  @override
+  final List<Category> data;
+  HorizontalCategoriesSection({this.title, required this.data});
+  @override
+  HOMESECTIONTYPE get type => HOMESECTIONTYPE.horizontalCategories;
+  @override
+  String? get subtitle => null;
+  @override
+  String? get backgroundColor => null;
+  @override
+  String? get textColor => null;
+  @override
+  String? get actionText => null;
+  @override
+  String? get targetId => null;
+}
+
+extension SectionEntityX<T> on HomeSectionI<T> {
   bool get isBannerSlider => type == HOMESECTIONTYPE.bannerSlider;
   bool get isProductsGrid => type == HOMESECTIONTYPE.itemsGrid;
   bool get isHorizontalProducts => type == HOMESECTIONTYPE.horizontalItems;

@@ -3,9 +3,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
-import 'package:store/presentation/features/home/home_screen.dart';
-import 'package:store/presentation/features/product_detail/widgets/product_detail_screen.dart';
-import 'package:store/presentation/features/product_detail/widgets/product_feedback_screen.dart';
+import 'package:store/presentation/features/home/views/home_screen.dart';
+import 'package:store/presentation/features/product/views/product_detail_screen.dart';
+import 'package:store/presentation/features/product/views/product_feedback_screen.dart';
 import 'package:store/presentation/features/settings/widgets/settings_screen.dart';
 import 'package:store/widgets/widgets.dart';
 

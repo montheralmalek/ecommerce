@@ -1,34 +1,38 @@
 part of 'home_cubit.dart';
 
 abstract class HomeState {
-  List<Section> get sections;
+  List<HomeSectionI> get sections;
 }
 
 class HomeInitial extends HomeState {
   @override
-  List<Section> get sections => [];
+  List<HomeSectionI> get sections => [];
 }
 
 class HomeLoading extends HomeState {
   @override
-  List<Section> get sections {
+  List<HomeSectionI> get sections {
     final products = List.generate(3, (_) => Product.loading());
     return [
-      Section<BannerModel>.loading(HOMESECTIONTYPE.bannerSlider, <BannerModel>[
-        BannerModel.onLoading(),
-      ]),
-      Section<Product>.loading(HOMESECTIONTYPE.horizontalItems, products),
-      Section<Product>.loading(HOMESECTIONTYPE.horizontalItems, products),
+      BannerSliderSection(data: [BannerModel.onLoading()]),
+      // HomeSectionI<BannerModel>.loading(
+      //   HOMESECTIONTYPE.bannerSlider,
+      //   <BannerModel>[BannerModel.onLoading()],
+      // ),
+      HorizontalItemsSection(title: 'title', data: products),
+      HorizontalItemsSection(title: 'title', data: products),
+      // HomeSectionI<Product>.loading(HOMESECTIONTYPE.horizontalItems, products),
+      // HomeSectionI<Product>.loading(HOMESECTIONTYPE.horizontalItems, products),
     ];
   }
 }
 
 class HomeLoaded extends HomeState {
-  final List<Section> _sections;
+  final List<HomeSectionI> _sections;
   HomeLoaded(this._sections);
 
   @override
-  List<Section> get sections => _sections;
+  List<HomeSectionI> get sections => _sections;
 }
 
 class HomeError extends HomeState {
@@ -37,5 +41,5 @@ class HomeError extends HomeState {
   HomeError(this.message);
 
   @override
-  List<Section> get sections => [];
+  List<HomeSectionI> get sections => [];
 }
