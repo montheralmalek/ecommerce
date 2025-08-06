@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:store/core/config/dependency_injection.dart';
-import 'package:store/data/repositories/auth_repository.dart';
+import 'package:store/data/repositories/auth_repository/auth_repository.dart';
 import 'package:store/presentation/features/auth/cubits/auth_cubit.dart';
 import 'package:store/presentation/features/auth/widgets/login_form.dart';
 import 'package:store/presentation/features/auth/viewmodel/login_viewmodel.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:store/core/widgets/item_card.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 
 class ItemListViewHorizontalBuilder extends StatelessWidget {
   const ItemListViewHorizontalBuilder({
@@ -28,31 +28,34 @@ class ItemListViewHorizontalBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // if (title != null) PlatformListTile(title: title!, trailing: trailing),
-        SizedBox(
-          height: itemHeight,
-          child: ListView.builder(
-            padding: padding,
-            itemExtent: itemWidth,
-            scrollDirection: Axis.horizontal,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Add spacing between items
-                  if (index != 0) SizedBox(width: spacing),
-                  // Item card
-                  Expanded(child: ItemCrad(product: products[index])),
-                ],
-              );
-            },
+    return Skeletonizer(
+      enabled: isLoading,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // if (title != null) PlatformListTile(title: title!, trailing: trailing),
+          SizedBox(
+            height: itemHeight,
+            child: ListView.builder(
+              padding: padding,
+              itemExtent: itemWidth,
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Add spacing between items
+                    if (index != 0) SizedBox(width: spacing),
+                    // Item card
+                    Expanded(child: ItemCrad(product: products[index])),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

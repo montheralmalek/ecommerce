@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/core/network/network_info.dart';
-import 'package:store/domain/domain_models/section.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/home_section.dart';
+import 'package:store/domain/entities/product.dart';
 import 'package:store/domain/use_cases/get_products_use_case.dart';
 
 part 'product_state.dart';

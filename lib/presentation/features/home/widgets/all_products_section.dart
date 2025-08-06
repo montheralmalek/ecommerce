@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/core/widgets/items_list_sliver_grid_builder.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 import 'package:store/presentation/features/product/cubits/getProductsCubit/product_cubit.dart';
-import 'package:store/presentation/features/home/cubits/homeScreenCubit/home_cubit.dart';
+import 'package:store/presentation/features/home/cubits/get_home_sections_cubit/home_sections_cubit.dart';
 import 'package:store/presentation/features/home/viewmodels/product_view_model.dart';
-import 'package:store/presentation/features/home/widgets/home_section_widget.dart';
+import 'package:store/presentation/features/home/widgets/home_section_item.dart';
 
 class AllProductsSection extends StatelessWidget {
   const AllProductsSection({super.key});

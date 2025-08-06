@@ -1,0 +1,39 @@
+[
+  {
+    "type": "bannerSlider",
+    "id": "banners",
+    "title": null
+  },
+  {
+    "type": "horizontalCategories",
+    "id": "common_categories",
+    "title": "Common Categories",
+    "actionText":"See all"
+  },
+  {
+    "type": "horizontalItems",
+    "id": "best_seller",
+    "title": "Best Seller",
+    "actionText":"See all"
+    
+  },
+  {
+    "type": "horizontalItems",
+    "id": "popular_products",
+    "title": "Most Popular Products",
+    "actionText":"See all"
+  },
+  {
+    "type": "horizontalItems",
+    "id": "special_offer_products",
+    "title": "Special Offer Products",
+    "actionText":"See all"
+  },
+  {
+    "type": "horizontalItems",
+    "id": "sCustom_products",
+    "title": "Custom Products",
+    "actionText":"See all"
+  }
+  
+]

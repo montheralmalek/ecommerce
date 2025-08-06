@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:logging/logging.dart';
 import 'package:store/routing/routes.dart';
-import 'package:store/data/repositories/auth_repository.dart';
+import 'package:store/data/repositories/auth_repository/auth_repository.dart';
 import 'package:store/presentation/features/auth/cubits/auth_cubit.dart';
 
 class LoginViewModel {

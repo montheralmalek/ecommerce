@@ -15,8 +15,8 @@ abstract final class AppColors {
 
   static const Color primaryDark = Color.fromARGB(255, 158, 189, 251); // Orange
   static const Color onPrimaryDark = surfaceDark;
-  static const Color secondaryDark = primary;
-  static const Color onSecondaryDark = surfaceDark;
+  static const Color secondaryDark = secondary;
+  static const Color onSecondaryDark = onSecondary;
   static const Color surfaceDark = onSurface;
   static const Color onSurfaceDark = surface;
   static const errorDark = Color.fromARGB(255, 255, 87, 87);

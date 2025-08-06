@@ -44,8 +44,8 @@ abstract final class _MaterialTheme {
       fontFamily: locale?.languageCode == 'ar' ? 'Cairo' : 'Khand',
 
       appBarTheme: const AppBarTheme(
-        foregroundColor: AppColors.onSecondary,
-        color: AppColors.secondary,
+        foregroundColor: AppColors.onPrimary,
+        color: AppColors.primary,
       ),
       useMaterial3: true,
       floatingActionButtonTheme: const FloatingActionButtonThemeData(

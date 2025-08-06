@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 import 'package:store/widgets/widgets.dart';
 
 class AddToCartButton extends StatelessWidget {

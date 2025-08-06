@@ -4,14 +4,20 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/core/network/dio_client.dart';
 import 'package:store/core/network/network_info.dart';
-import 'package:store/data/repositories/auth_repository.dart';
-import 'package:store/data/repositories/auth_repository_remote.dart';
-import 'package:store/data/repositories/settings_repository.dart';
-import 'package:store/data/services/remote/api_client.dart';
-import 'package:store/data/repositories/product_repository.dart';
+import 'package:store/data/repositories/auth_repository/auth_repository.dart';
+import 'package:store/data/repositories/auth_repository/auth_repository_remote.dart';
+import 'package:store/data/repositories/home_repository/home_repository.dart';
+import 'package:store/data/repositories/home_repository/home_repository_imp.dart';
+import 'package:store/data/repositories/product_repository/product_repository_impl.dart';
+import 'package:store/data/repositories/settings_repository/settings_repository.dart';
+import 'package:store/data/services/remote/api_service.dart';
+import 'package:store/data/repositories/product_repository/product_repository.dart';
 import 'package:store/data/services/remote/auth_api_client.dart';
 import 'package:store/data/shared_preferences_service.dart';
+import 'package:store/domain/use_cases/get_banners_use_case.dart';
+import 'package:store/domain/use_cases/get_home_sections_use_case.dart';
 import 'package:store/domain/use_cases/get_products_use_case.dart';
+import 'package:store/domain/use_cases/get_section_products_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -34,16 +40,19 @@ Future<void> initializeDependencies() async {
   getIt.registerSingleton<SharedPreferencesService>(
     SharedPreferencesServiceImp(sharedPreferences),
   );
-  getIt.registerSingleton<ApiClient>(ApiClientImpl(getIt<DioClient>()));
+  getIt.registerSingleton<ApiService>(ApiServiceImpl(getIt<DioClient>()));
   // Auth API
   getIt.registerSingleton<AuthApi>(AuthApiImp(getIt<DioClient>()));
 
   // Repository
   getIt.registerSingleton<ProductRepository>(
     ProductRepositoryImpl(
-      remoteDataSource: getIt<ApiClient>(),
+      remoteDataSource: getIt<ApiService>(),
       networkInfo: getIt<NetworkInfo>(),
     ),
+  );
+  getIt.registerSingleton<HomeRepository>(
+    HomeRepositoryImp(getIt<ApiService>()),
   );
   getIt.registerSingleton<AuthRepository>(
     AuthRepositoryRemote(
@@ -58,7 +67,11 @@ Future<void> initializeDependencies() async {
   getIt.registerSingleton<GetProductsUseCase>(
     GetProductsUseCase(getIt<ProductRepository>()),
   );
-  getIt.registerSingleton<GetSectionsUseCase>(
-    GetSectionsUseCase(getIt<ProductRepository>()),
+  getIt.registerSingleton<GetHomeSectionsUseCase>(
+    GetHomeSectionsUseCase(getIt()),
   );
+  getIt.registerSingleton<GetSectionProductsUseCase>(
+    GetSectionProductsUseCase(getIt()),
+  );
+  getIt.registerSingleton<GetBannersUseCase>(GetBannersUseCase(getIt()));
 }

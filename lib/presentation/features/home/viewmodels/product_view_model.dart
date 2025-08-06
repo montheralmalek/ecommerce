@@ -1,4 +1,4 @@
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 import 'package:store/presentation/features/product/cubits/getProductsCubit/product_cubit.dart';
 
 class ProductViewModel {

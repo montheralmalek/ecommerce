@@ -4,15 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:store/core/themes/dimens.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
+import 'package:store/presentation/features/home/views/keep_alive.dart';
 import 'package:store/presentation/features/home/widgets/log_out_button.dart';
-import 'package:store/core/utils/extensions/widget_extensions.dart';
-import 'package:store/domain/domain_models/banner.dart';
-import 'package:store/domain/domain_models/section.dart';
-import 'package:store/presentation/features/home/cubits/homeScreenCubit/home_cubit.dart';
-import 'package:store/presentation/features/home/widgets/home_section_widget.dart';
+import 'package:store/domain/entities/home_section.dart';
+import 'package:store/presentation/features/home/cubits/get_home_sections_cubit/home_sections_cubit.dart';
+import 'package:store/presentation/features/home/widgets/home_section_item.dart';
 import 'package:store/routing/routes.dart';
 import 'package:store/widgets/custom_error_widget.dart';
 
@@ -21,35 +18,94 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static final _log = Logger('HomeScreen');
+
   @override
   Widget build(BuildContext context) {
     _log.info('HomeScreen build (${context.platform.name})');
     return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: Text('Home'),
-        trailingActions: _appBarActionsList,
-        // leading: _homeDrawerButton(context),
-      ),
+      appBar: _buildPlatformAppBar(),
 
-      material:
-          (context, platform) =>
-              MaterialScaffoldData(drawer: _buildMaterialDrawer(context)),
-      cupertino:
-          (context, platform) => CupertinoPageScaffoldData(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text('Home'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: _appBarActionsList,
-              ),
-              leading: _homeDrawerButton(context),
-            ),
-          ),
+      material: _getMaterialScaffoldDatat,
+      cupertino: _getCapertinoPageScaffoldDatat,
 
-      body: const BuildHomeSections(),
+      body: _getHomePageBody(context),
     );
   }
 
+  // AppBar
+  PlatformAppBar _buildPlatformAppBar() {
+    return PlatformAppBar(
+      title: _getAppBarTitle(),
+      trailingActions: _appBarActionsList,
+      // leading: _homeDrawerButton(context),
+    );
+  }
+
+  Text _getAppBarTitle() => Text('Store Name');
+
+  //
+  MaterialScaffoldData _getMaterialScaffoldDatat(context, platform) {
+    return MaterialScaffoldData(drawer: _buildMaterialDrawer(context));
+  }
+
+  //
+  CupertinoPageScaffoldData _getCapertinoPageScaffoldDatat(context, platform) {
+    return CupertinoPageScaffoldData(
+      navigationBar: CupertinoNavigationBar(
+        middle: _getAppBarTitle(),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: _appBarActionsList,
+        ),
+        leading: _homeDrawerButton(context),
+      ),
+    );
+  }
+
+  // Body building function
+  Widget _getHomePageBody(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeSectionState>(
+      builder: (context, state) {
+        if (state is HomeSectionError) return _buildError(state);
+        if (state is HomeSectionInitial) {
+          context.read<HomeCubit>().loadHomeSections();
+        }
+        if (state is HomeSectionLoading) return _buildLoading();
+        if (state is HomeSectionLoaded) return _buildSections(state.sections);
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  //---------
+  Widget _buildSections(List<HomeSection> sections) {
+    return SafeArea(
+      child: CustomScrollView(
+        physics: PageScrollPhysics(),
+        slivers: [
+          SliverList.builder(
+            itemCount: sections.length,
+            itemBuilder: (context, index) {
+              final section = sections[index];
+              return KeepAliveWrapper(child: HomeSectionItem(section: section));
+              // return _HomeSectionItem(
+              //   // Extract to StatefulWidget
+              //   key: Key('${section.targetId}_${section.type.name}'),
+              //   section: section,
+              // );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  //
+  Widget _buildLoading() => Center(child: CircularProgressIndicator());
+  //
+  Widget _buildError(HomeSectionError state) =>
+      CustomErrorWidget(message: state.message);
+  //
   void _openNavigation(BuildContext context) {
     if (isMaterial(context)) {
       Scaffold.of(context).openDrawer();
@@ -124,69 +180,6 @@ class HomeScreen extends StatelessWidget {
   ];
 }
 
-class BuildHomeSections extends StatelessWidget {
-  const BuildHomeSections({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        if (state is HomeError) {
-          return CustomErrorWidget(message: state.message);
-        }
-
-        final List<HomeSectionI> homeSections = state.sections;
-
-        return SafeArea(
-          child: CustomScrollView(
-            physics: PageScrollPhysics(),
-            slivers: [
-              // BannerSlider(isLoading: state is HomeLoading).toSliver,
-              ...homeSections.map((section) {
-                return HomeSectionWidget(
-                  isLoading: state is HomeLoading,
-                  homeSection: section,
-                  title: section.title,
-                ).toSliver;
-              }),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class BannerWidget extends StatelessWidget {
-  const BannerWidget({
-    super.key,
-    required this.bannerModel,
-    this.width = double.infinity,
-    this.height = 200,
-    this.backgroundColor,
-    this.isLoading = false,
-  });
-  final BannerModel bannerModel;
-  final double? height, width;
-  final Color? backgroundColor;
-  final bool isLoading;
-  @override
-  Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: isLoading,
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        // child: Center(child: Text(bannerModel.title, style: TextStyle(fontSize: 30))),
-      ),
-    );
-  }
-}
-
 /// Refresh button
 
 class RefreshHomeButton extends StatelessWidget {
@@ -194,10 +187,10 @@ class RefreshHomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<HomeCubit, HomeSectionState>(
       builder: (context, state) {
-        if (state is HomeLoading) {
-          return const SizedBox();
+        if (state is HomeSectionLoading) {
+          return const SizedBox.shrink();
         }
         return _buildRefreshButton(context);
       },
@@ -208,8 +201,13 @@ class RefreshHomeButton extends StatelessWidget {
     return PlatformIconButton(
       icon: Icon(context.platformIcons.refresh),
       onPressed: () {
-        BlocProvider.of<HomeCubit>(context).retry();
+        context.read<HomeCubit>().retry();
+        // BlocProvider.of<HomeCubit>(context).retry();
       },
     );
   }
 }
+
+//=============================================
+
+//=============================================

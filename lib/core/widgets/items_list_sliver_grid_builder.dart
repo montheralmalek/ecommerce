@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store/core/widgets/item_card.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 
 class ItemsListGridBuilder extends StatelessWidget {
   const ItemsListGridBuilder({

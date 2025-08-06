@@ -9,7 +9,7 @@ import 'package:store/routing/routes.dart';
 import 'package:store/core/utils/errors/image_error_functions.dart';
 import 'package:store/core/utils/helpers/calculates_func.dart';
 import 'package:store/core/widgets/add_to_cart_button.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/domain/entities/product.dart';
 
 class ItemCrad extends StatelessWidget {
   const ItemCrad({

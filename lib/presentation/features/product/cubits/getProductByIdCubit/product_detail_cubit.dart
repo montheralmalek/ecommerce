@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:store/data/repositories/product_repository.dart';
-import 'package:store/domain/domain_models/product.dart';
+import 'package:store/data/repositories/product_repository/product_repository.dart';
+import 'package:store/domain/entities/product.dart';
 
 part 'product_detail_state.dart';
 
