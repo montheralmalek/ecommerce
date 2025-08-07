@@ -428,6 +428,12 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "photo_view",
+      "rootUri": "file:///Users/y/.pub-cache/hosted/pub.dev/photo_view-0.15.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "platform",
       "rootUri": "file:///Users/y/.pub-cache/hosted/pub.dev/platform-3.1.6",
       "packageUri": "lib/",
@@ -656,7 +662,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-07-06T23:32:58.293320Z",
+  "generated": "2025-08-07T15:12:55.889947Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///Users/y/development/flutter",

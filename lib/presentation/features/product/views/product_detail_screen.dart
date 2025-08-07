@@ -9,8 +9,9 @@ import 'package:store/core/widgets/horizontal_item_list_view_builder.dart';
 import 'package:store/core/widgets/item_card.dart';
 import 'package:store/domain/entities/product.dart';
 import 'package:store/presentation/features/product/cubits/getProductByIdCubit/product_detail_cubit.dart';
+import 'package:store/presentation/features/product/widgets/product_image_slider.dart';
 import 'package:store/presentation/features/product/widgets/product_rating_detail_widget.dart';
-import 'package:store/widgets/custom_carousel_slider.dart';
+import 'package:store/presentation/features/product/widgets/section_tile_widget.dart';
 import 'package:store/widgets/custom_error_widget.dart';
 import 'package:store/widgets/expandable_text.dart';
 
@@ -86,7 +87,7 @@ class ProductDetailScreen extends StatelessWidget {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
-        _getProductImage(product?.imageUrl ?? ''),
+        _buildProductImageSlider(context, product?.imageUrl ?? ''),
         SliverToBoxAdapter(
           child: Padding(
             padding: _padding,
@@ -197,46 +198,13 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  SliverToBoxAdapter _getProductImage(String imageUrl) {
+  ///
+  SliverToBoxAdapter _buildProductImageSlider(
+    BuildContext context,
+    String imageUrl,
+  ) {
     return SliverToBoxAdapter(
-      child: SizedBox(
-        // height: 250,
-        child: CustomCarouselSlider.builder(
-          itemCount: 3,
-          autoPlay: true,
-          itemBuilder: (context, index, realIndex) {
-            return CustomCachedNetworkImage(
-              fit: BoxFit.contain,
-              width: double.infinity,
-              imageUrl: imageUrl,
-            );
-          },
-        ),
-        // Stack(
-        //   alignment: AlignmentDirectional.bottomEnd,
-        //   children: [
-        // CustomCachedNetworkImage(
-        //   fit: BoxFit.contain,
-        //   width: double.infinity,
-        //   height: 250,
-        //   imageUrl: imageUrl,
-        // ),
-        //     Container(
-        //       // color: context.theme.hoverColor,
-        //       padding: const EdgeInsets.all(Dimens.p4),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         children: [
-        //           IconButton.filledTonal(
-        //             onPressed: () {},
-        //             icon: Icon(Icons.favorite_border),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
-      ),
+      child: ProductImagsSlider(imageUrls: [imageUrl, imageUrl, imageUrl]),
     );
   }
 
@@ -254,89 +222,3 @@ class ProductDetailScreen extends StatelessWidget {
     return starRating;
   }
 }
-
-class SectionTileWidget extends StatelessWidget {
-  const SectionTileWidget({
-    super.key,
-    this.title,
-    this.content,
-    this.spacing = 10.0,
-    this.trailing,
-    this.leading,
-    this.headerPadding = EdgeInsets.zero,
-    this.contentPadding = EdgeInsets.zero,
-  });
-  final Widget? title;
-  final Widget? trailing;
-  final Widget? leading;
-  final Widget? content;
-  final double spacing;
-  final EdgeInsetsGeometry headerPadding;
-  final EdgeInsetsGeometry contentPadding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: contentPadding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (_hasHeader) _buildHeader(context),
-          Offstage(offstage: !_hasHeader, child: SizedBox(height: spacing)),
-          content ?? SizedBox.shrink(),
-        ],
-      ),
-    );
-  }
-
-  bool get _hasHeader => title != null || trailing != null;
-  bool get _hasFooter => false;
-  Widget _buildHeader(BuildContext context) {
-    return DefaultTextStyle.merge(
-      style: context.textTheme.titleLarge,
-      child: Padding(
-        padding: headerPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (leading != null) leading!,
-            if (title != null) title!,
-            if (trailing != null) trailing!,
-          ],
-        ),
-      ),
-    );
-  }
-
-  // _buildFooter(BuildContext context) {}
-}
-// void onPopInvokedWithResult(didPop, result) async {
-//         if (didPop) {
-//           return;
-//         }
-//      var   canPop = await showPlatformDialog<bool>(
-//           context: context,
-//           builder: (context) {
-//             return PlatformAlertDialog(
-//               title: Text('Confirm Exit'),
-//               content: Text(
-//                 'You are leaving the Product Detail screen. Do you want to continue?',
-//               ),
-//               actions: [
-//                 PlatformDialogAction(
-//                   onPressed: () => context.pop<bool>(true),
-//                   child: Text('OK'),
-//                 ),
-//                 PlatformDialogAction(
-//                   onPressed: () => context.pop(false),
-//                   child: Text('Cancel'),
-//                 ),
-//               ],
-//             );
-//           },
-//         ).then((value) => value ?? false);
-//         if (canPop) {
-//           context.pop();
-//         }
-//       },

@@ -12,6 +12,7 @@ import 'package:store/presentation/features/home/cubits/get_home_section_data_cu
 import 'package:store/presentation/features/home/widgets/banner_slider.dart';
 import 'package:store/presentation/features/home/widgets/skeletones/home_section_data_skeletone.dart';
 import 'package:store/presentation/features/product/views/product_detail_screen.dart';
+import 'package:store/presentation/features/product/widgets/section_tile_widget.dart';
 import 'package:store/widgets/custom_error_widget.dart';
 
 class HomeSectionItem extends StatefulWidget {
