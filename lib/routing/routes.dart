@@ -6,6 +6,7 @@ abstract final class AppRoutes {
   static const String home = '/home';
   static const String productDetails = '/product';
   static const String cart = '/cart';
+  static const String addToCart = '/add-to-cart';
   static const String checkout = '/checkout';
   static const String profile = '/profile';
   static const String categories = '/categories';
@@ -25,6 +26,7 @@ abstract final class AppRoutes {
   static const String orderHistory = '/order-history';
   static const String orderDetails = '/order-details';
   static const String productRating = '/product-rating';
+  static const String developmentView = '/development-view';
   // static String productDetailsWithId(int id) => '/$productDetailsRelative/$id';
 
   // Returns all the routes as a list
@@ -54,5 +56,6 @@ abstract final class AppRoutes {
     wishlist,
     orderHistory,
     orderDetails,
+    developmentView,
   ];
 }

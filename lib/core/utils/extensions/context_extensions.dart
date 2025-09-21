@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:store/core/constants/app_icons.dart';
 
 extension ContextExtensions on BuildContext {
   /// Returns the [ThemeData] of the current context.
@@ -80,17 +81,8 @@ extension ContextExtensions on BuildContext {
   bool get isLightMode =>
       MediaQuery.of(this).platformBrightness == Brightness.light;
 
-  /// Navigate to named location.
-  // void toNamed(
-  //   String name, {
-  //   Map<String, String> pathParameters = const <String, String>{},
-  //   Map<String, dynamic> queryParameters = const <String, dynamic>{},
-  //   String? extra,
-  // }) =>
-  //     GoRouter.of(this).pushNamed(name,
-  //         pathParameters: pathParameters,
-  //         queryParameters: queryParameters,
-  //         extra: extra);
+  /// Returns AppIcons based on platform
+  AppIcons get appIcons => AppIcons.of(this);
 }
 
 /// Navigate extension methods for [BuildContext].

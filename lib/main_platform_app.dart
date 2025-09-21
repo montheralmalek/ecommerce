@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:store/core/themes/app_theme.dart';
 import 'package:store/core/utils/extensions/theme_mode_extensions.dart';
-import 'package:store/presentation/features/settings/cubit/settings_cubit.dart';
+import 'package:store/ui/features/settings/cubit/settings_cubit.dart';
 import 'package:store/routing/router.dart';
 
 class MainPlatformApp extends StatelessWidget {
@@ -34,26 +34,37 @@ class MainPlatformApp extends StatelessWidget {
                 Locale('en', 'ar'), // add other locales if needed
               ],
 
-              material:
-                  (_, _) => MaterialAppRouterData(
-                    themeMode: state.themeMode,
-                    theme:
-                        state.themeMode.isDark
-                            ? AppTheme.materialDarkTheme
-                            : AppTheme.materialLightTheme,
-                    darkTheme: AppTheme.materialDarkTheme,
-                  ),
-              cupertino:
-                  (context, platform) => CupertinoAppRouterData(
-                    theme:
-                        state.themeMode.isDark
-                            ? AppTheme.cupertinoDarkTheme
-                            : AppTheme.cupertinoLightTheme,
-                  ),
+              material: (_, _) => _materialAppRouterData(state.themeMode),
+
+              cupertino: (_, _) => _cupertinoAppRouterData(state.themeMode),
             );
           },
         );
       },
+    );
+  }
+
+  // MaterialAppRouterData
+  MaterialAppRouterData _materialAppRouterData(ThemeMode themeMode) {
+    return MaterialAppRouterData(
+      themeMode: themeMode,
+      theme:
+          themeMode.isDark
+              ? AppTheme.materialDarkTheme
+              : AppTheme.materialLightTheme,
+      darkTheme: AppTheme.materialDarkTheme,
+      themeAnimationDuration: const Duration(milliseconds: 800),
+      themeAnimationCurve: Curves.fastOutSlowIn,
+    );
+  }
+
+  // CupertinoAppRouterData
+  CupertinoAppRouterData _cupertinoAppRouterData(ThemeMode themeMode) {
+    return CupertinoAppRouterData(
+      theme:
+          themeMode.isDark
+              ? AppTheme.cupertinoDarkTheme
+              : AppTheme.cupertinoLightTheme,
     );
   }
 }

@@ -14,25 +14,16 @@ abstract final class _MaterialTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: AppColors.darkColorScheme,
-      // scaffoldBackgroundColor: AppColors.secondaryDark,
       fontFamily: locale?.languageCode == 'ar' ? 'Cairo' : 'Khand',
-
-      appBarTheme: const AppBarTheme(
-        foregroundColor: AppColors.secondaryDark,
-        color: AppColors.onSecondaryDark,
-      ),
 
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         shape: CircleBorder(),
-        foregroundColor: AppColors.onPrimaryDark,
-        backgroundColor: AppColors.primaryDark,
+
         elevation: 9,
         iconSize: 32,
       ),
-      cardTheme: CardTheme(
-        color: AppColors.secondaryDark.withValues(alpha: 0.1),
-      ),
-      textTheme: const TextTheme(),
+      // cardTheme: CardTheme(color: AppColors.surfaceDark.withAlpha(180)),
+      // textTheme: const TextTheme(),
     );
   }
 
@@ -50,48 +41,65 @@ abstract final class _MaterialTheme {
       useMaterial3: true,
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         shape: CircleBorder(),
-        foregroundColor: AppColors.onPrimary,
-        backgroundColor: AppColors.primary,
+        // foregroundColor: AppColors.onPrimary,
+        // backgroundColor: AppColors.primary,
         elevation: 9,
         iconSize: 32,
       ),
-      textTheme: const TextTheme(),
+      // textTheme: const TextTheme(),
+      cardTheme: CardTheme(color: AppColors.surface.withAlpha(180)),
+      // buttonTheme: const ButtonThemeData(shape: RoundedRectangleBorder()),
+      // filledButtonTheme: FilledButtonThemeData(
+      //   style: FilledButton.styleFrom(
+      //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      //   ),
+      // ),
     );
   }
 }
 
 abstract final class _CupertinoTheme {
+  // static final CupertinoThemeData _cupretinoThemeData = CupertinoThemeData(
+  //   primaryColor: AppColors.primary,
+  //   primaryContrastingColor: AppColors.onPrimary,
+  //   textTheme: CupertinoTextThemeData(primaryColor: AppColors.onPrimary),
+  // );
   static CupertinoThemeData darkTheme({Locale? locale}) {
-    return CupertinoThemeData(
+    // return _cupretinoThemeData.copyWith(
+    //   brightness: Brightness.dark,
+    //   barBackgroundColor: AppColors.primary,
+    //   scaffoldBackgroundColor: AppColors.primary,
+    // );
+
+    return MaterialBasedCupertinoThemeData(
+      materialTheme: _MaterialTheme.darkTheme(),
+    ).copyWith(
       brightness: Brightness.dark,
-      primaryColor: AppColors.primaryDark,
-      primaryContrastingColor: AppColors.onPrimaryDark,
-      barBackgroundColor: AppColors.onPrimaryDark,
-      scaffoldBackgroundColor: AppColors.surfaceDark,
       textTheme: CupertinoTextThemeData(
-        primaryColor: AppColors.primaryDark,
-        navTitleTextStyle: TextStyle(
-          inherit: false,
-          color: AppColors.primaryDark,
+        primaryColor: AppColors.onPrimary,
+        textStyle: TextStyle(
+          fontFamily: locale?.languageCode == 'ar' ? 'Cairo' : 'Khand',
         ),
       ),
     );
-    // return MaterialBasedCupertinoThemeData(
-    //   materialTheme: _MaterialTheme.darkTheme(),
-    // );
   }
 
   static CupertinoThemeData lightTheme({Locale? locale}) {
-    return CupertinoThemeData(
+    return MaterialBasedCupertinoThemeData(
+      materialTheme: _MaterialTheme.lightTheme(),
+    ).copyWith(
       brightness: Brightness.light,
-      primaryColor: AppColors.primary,
-      primaryContrastingColor: AppColors.onPrimary,
-      barBackgroundColor: AppColors.secondary,
-      scaffoldBackgroundColor: AppColors.surface,
       textTheme: CupertinoTextThemeData(
-        primaryColor: AppColors.primary,
-        navTitleTextStyle: TextStyle(inherit: false, color: AppColors.primary),
+        primaryColor: AppColors.onSurface,
+        textStyle: TextStyle(
+          fontFamily: locale?.languageCode == 'ar' ? 'Cairo' : 'Khand',
+        ),
       ),
     );
+    // return _cupretinoThemeData.copyWith(
+    //   brightness: Brightness.light,
+    //   barBackgroundColor: AppColors.primary,
+    //   scaffoldBackgroundColor: AppColors.surface,
+    // );
   }
 }

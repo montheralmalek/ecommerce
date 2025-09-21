@@ -11,6 +11,6 @@ double calculatePercentage(double value, double total) {
 /// Function to calculate the discount price
 /// [price] is the original price
 /// [discount] is the discount percentage
-double calculateDiscountPrice(double price, double discount) {
-  return price - (price * (discount / 100));
+double calculateDiscount(double price, double discount) {
+  return (price * (discount / 100));
 }

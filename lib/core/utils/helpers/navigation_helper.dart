@@ -1,47 +1,20 @@
-// import 'package:get/get.dart';
-// import 'package:seller/features/home/view/home_page.dart';
-// import 'package:seller/features/item/model/item_details.dart';
-// import 'package:seller/features/item/view/currencies_screen.dart';
-// import 'package:seller/features/item/view/views.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:store/domain/entities/product.dart';
+import 'package:store/routing/routes.dart';
 
-// class NavigationHelper {
-//   // Navigate to the item screen
-//   static void goToItemScreen() {
-//     Get.toNamed(ItemsScreen.id);
-//   }
+class NavigationHelper {
+  final BuildContext context;
 
-//   static void goToAddItemScreen() {
-//     Get.toNamed(AddItemScreen.id);
-//   }
+  NavigationHelper.of(this.context);
 
-//   static void goToItemDetailScreen(ItemWithDetails itemWithDetails) {
-//     Get.toNamed(ItemDetailScreen.id, arguments: itemWithDetails);
-//   }
+  /// Navigate to Home Screen
+  void goToHomeScreen() {
+    context.pushNamed(AppRoutes.home);
+  }
 
-//   // Navigate to the category screen with an ID parameter
-//   static void goToCategoryScreen() {
-//     Get.toNamed(CategoriesScreen.id);
-//   }
-
-//   static void goToUnitScreen() {
-//     Get.toNamed(UnitsScreen.id);
-//   }
-
-//   static void goToAddUnitScreen() {
-//     Get.toNamed(AddUnitScreen.id);
-//   }
-
-//   static void goToCurrenciesScreen() {
-//     Get.toNamed(CurrenciesScreen.id);
-//   }
-
-//   // Navigate back
-//   static void goBack() {
-//     Get.back();
-//   }
-
-//   // Navigate to the home screen and clear the navigation stack
-//   static void goToHomeScreen() {
-//     Get.offAllNamed(SellerHomePage.id);
-//   }
-// }
+  /// Navigate to Add To Cart Screen
+  void goToAddToCartScreen(Product product) {
+    context.pushNamed(AppRoutes.addToCart, extra: product);
+  }
+}

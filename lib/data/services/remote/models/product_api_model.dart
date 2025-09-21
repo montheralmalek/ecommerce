@@ -11,9 +11,15 @@ class ProductApiModel {
   final String? model;
   final String? color;
   final int? discount;
-  final bool isPopular;
+  final bool isNew;
+  @Deprecated('Do not use this field, it is always false')
   final bool isOnSale;
-  final RatingApiModel? rating;
+  final double? rateValue;
+  final double? discountAmount;
+  final int? stock;
+  final List<String>? size;
+  @Deprecated('Use rateValue instead')
+  final RatingApiModel rating;
 
   ProductApiModel({
     required this.id,
@@ -27,29 +33,58 @@ class ProductApiModel {
     this.discount,
     this.model,
     this.isOnSale = false,
-    this.isPopular = false,
-    this.rating,
+    this.isNew = false,
+    this.rateValue,
+    this.discountAmount,
+    this.stock,
+    this.size,
+    required this.rating,
   });
 
   factory ProductApiModel.fromJson(jsonData) {
     try {
       return ProductApiModel(
-        id: jsonData['id'],
+        id: jsonData['_id'],
         title: jsonData['title'],
         price: double.parse(jsonData['price'].toString()),
         description: jsonData['description'],
         category: jsonData['category'],
         image: jsonData['image'],
-        brand: jsonData['brand'],
-        color: jsonData['color'],
-        discount: jsonData['discount'],
+        brand: jsonData['brand'] ?? 'Brand',
+        color: jsonData['color'] ?? 'Color',
+        discount:
+            jsonData['discount'] ??
+            (jsonData['oldPrice'] != null
+                ? int.tryParse(
+                  (((jsonData['price'] / jsonData['discountedPrice']) - 1) *
+                          100)
+                      .toStringAsFixed(0),
+                )
+                : null),
         model: jsonData['model'],
         isOnSale: jsonData['onSale'] ?? false,
-        isPopular: jsonData['popular'] ?? false,
-        rating:
+        isNew: jsonData['isNew'] ?? false,
+        rateValue:
             jsonData['rating'] != null
-                ? RatingApiModel.fromJson(jsonData['rating'])
+                ? double.tryParse(jsonData['rating'].toString())
                 : null,
+        discountAmount:
+            jsonData['discountedPrice'] != null
+                ? double.tryParse(
+                  (jsonData['price'] - jsonData['discountedPrice'])
+                      .toStringAsFixed(2),
+                )
+                : null,
+        stock: jsonData['stock'],
+        size:
+            jsonData['size'] != null
+                ? List<String>.from(jsonData['size'])
+                : null,
+        rating:
+            // jsonData['rating'] != null
+            //     ? RatingApiModel.fromJson(jsonData['rating'])
+            //     :
+            RatingApiModel.empty(),
       );
     } on Exception catch (e) {
       throw ValidationException('Product model argument error');
@@ -80,7 +115,10 @@ class RatingApiModel {
 
   factory RatingApiModel.fromJson(jsonData) {
     try {
-      return RatingApiModel(rate: jsonData['rate'], count: jsonData['count']);
+      return RatingApiModel(
+        rate: double.parse(jsonData['rate'].toString()),
+        count: jsonData['count'],
+      );
     } on Exception catch (e) {
       throw ValidationException('Rating model argument error');
     }
@@ -88,5 +126,9 @@ class RatingApiModel {
 
   Map<String, dynamic> toJson() {
     return {'rate': rate, 'count': count};
+  }
+
+  factory RatingApiModel.empty() {
+    return RatingApiModel(rate: 0.0, count: 0);
   }
 }

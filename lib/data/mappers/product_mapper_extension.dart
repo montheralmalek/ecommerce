@@ -5,41 +5,45 @@ import '../services/remote/models/product_api_model.dart';
 // Map from ProductModel to ProductEntity
 extension ProductModelMapper on ProductApiModel {
   Product toEntity() {
-    return Product.builder()
-        .setId(id)
-        .setTitle(title)
-        .setPrice(price)
-        .setDescription(description)
-        .setCategory(category)
-        .setImageUrl(image)
-        .setBrand(brand)
-        .setColor(color)
-        .setDiscount(discount)
-        .setModel(model)
-        .setIsPopular(isPopular)
-        .setIsOnSale(isOnSale)
-        .setRating(rating?.toEntity())
-        .build();
-  }
-}
-
-// Map from ProductEntity to ProductModel
-extension ProductEntityMapper on Product {
-  ProductApiModel toModel() {
-    return ProductApiModel(
+    return Product(
       id: id,
       title: title,
       price: price,
       description: description,
       category: category,
-      image: imageUrl,
-      brand: brand,
-      color: color,
+      imageUrl: image,
+      brand: brand ?? 'Brand',
+      model: model ?? 'Model',
+      color: color ?? 'Color',
       discount: discount,
-      model: model,
+      isNew: isNew,
+      isOnSale: isOnSale,
+      discountAmount: discountAmount,
+      rateValue: rateValue,
+      stock: stock ?? 0,
+      sizes: size,
+      rating: rating.toEntity(),
     );
   }
 }
+
+// Map from ProductEntity to ProductModel
+// extension ProductEntityMapper on Product {
+//   ProductApiModel toModel() {
+//     return ProductApiModel(
+//       id: id,
+//       title: title,
+//       price: price,
+//       description: description,
+//       category: category,
+//       image: imageUrl,
+//       brand: brand,
+//       color: color,
+//       discount: discount,
+//       model: model,
+//     );
+//   }
+// }
 
 extension ProductRatingMapper on RatingApiModel {
   Rating toEntity() {

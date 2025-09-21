@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:store/core/constants/api_endpoints.dart';
 import 'package:store/core/constants/app_assets.dart';
 import 'package:store/core/network/dio_client.dart';
@@ -37,19 +36,22 @@ class ApiServiceImpl implements ApiService {
     _apiRequest.dio.options.connectTimeout = const Duration(seconds: 30);
     _apiRequest.dio.options.receiveTimeout = const Duration(seconds: 30);
   }
+  final _log = Logger('ApiServiceImpl');
 
   @override
   Future<List<ProductApiModel>> getProducts({int limit = 20}) async {
     try {
-      final Map<String, dynamic> param = {'limit': 20};
+      _log.info('Fetching products with limit: $limit');
+      // final Map<String, dynamic> param = {'limit': 20};
       final response = await _apiRequest.get(
         ApiEndpoints.getProducts,
-        params: param,
+        // params: param,
       );
-      return (response.data['products'] as List)
-          .map((json) => ProductApiModel.fromJson(json))
-          .toList();
+      final List data = response.data['data'];
+      _log.info('Products fetched successfully: ${data.length} items');
+      return data.map((json) => ProductApiModel.fromJson(json)).toList();
     } catch (e) {
+      _log.severe('Error fetching products: $e');
       throw _handleException(e);
     }
   }
@@ -58,7 +60,7 @@ class ApiServiceImpl implements ApiService {
   Future<ProductApiModel> getProductById(String id) async {
     try {
       final response = await _apiRequest.get(ApiEndpoints.getProductById(id));
-      return ProductApiModel.fromJson(response.data['product']);
+      return ProductApiModel.fromJson(response.data);
     } catch (e) {
       throw _handleException(e);
     }

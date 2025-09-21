@@ -9,10 +9,15 @@ class Product {
   final String? model;
   final String? color;
   final int? discount;
-  final bool isPopular;
+  final bool isNew;
+  final double? rateValue;
+  final double? discountAmount;
+  final int stock;
+  final List<String>? sizes;
   final bool isOnSale;
+
   final Rating? rating;
-  Product._({
+  const Product({
     required this.id,
     required this.title,
     required this.price,
@@ -24,56 +29,26 @@ class Product {
     this.discount,
     this.model,
     this.isOnSale = false,
-    this.isPopular = false,
+    this.isNew = false,
+    this.rateValue,
+    this.discountAmount,
+    this.stock = 0,
+    this.sizes,
     this.rating,
   });
-  static ProductBuiler builder() => ProductBuiler();
 
   factory Product.loading() = _ProductLoading;
-  factory Product({
-    required int id,
-    required String title,
-    required double price,
-    required String description,
-    required String category,
-    required String imageUrl,
-    String? brand,
-    String? model,
-    String? color,
-    int? discount,
-    bool isPopular = false,
-    bool isOnSale = false,
-    Rating? rating,
-  }) {
-    return Product._(
-      id: id,
-      title: title,
-      price: price,
-      description: description,
-      category: category,
-      imageUrl: imageUrl,
-      brand: brand,
-      model: model,
-      color: color,
-      discount: discount ?? 0,
-      isPopular: isPopular,
-      isOnSale: isOnSale,
-      rating: rating ?? Rating.empty(),
-    );
-  }
+
   factory Product.empty() {
-    return Product._(
+    return Product(
       id: 0,
       title: '',
       price: 0.0,
       description: '',
       category: '',
       imageUrl: '',
-      brand: null,
-      model: null,
-      color: null,
       discount: 0,
-      isPopular: false,
+      isNew: false,
       isOnSale: false,
       rating: Rating.empty(),
     );
@@ -89,11 +64,15 @@ class Product {
     String? model,
     String? color,
     int? discount,
-    bool? isPopular,
+    bool? isNew,
+    double? discountAmount,
+    double? rateValue,
+    int? stock,
+    List<String>? size,
     bool? isOnSale,
     Rating? rating,
   }) {
-    return Product._(
+    return Product(
       id: id ?? this.id,
       title: title ?? this.title,
       price: price ?? this.price,
@@ -104,113 +83,51 @@ class Product {
       model: model ?? this.model,
       color: color ?? this.color,
       discount: discount ?? this.discount,
-      isPopular: isPopular ?? this.isPopular,
+      isNew: isNew ?? this.isNew,
       isOnSale: isOnSale ?? this.isOnSale,
+      discountAmount: discountAmount ?? this.discountAmount,
+      rateValue: rateValue ?? this.rateValue,
+      stock: stock ?? this.stock,
+      sizes: size ?? sizes,
       rating: rating ?? this.rating,
     );
   }
+
+  /// check is available
+  bool get isAvailableInStock => stock > 0;
+
+  /// Check if the product has a discount
+  bool get hasDiscount => discount != null && discount! > 0;
+
+  /// Original price before discount
+  double get originalPrice => price;
+
+  /// Real price after discount
+  double get realPrice => price - (discountAmount ?? 0.0);
+
+  /// Discount amount
+  // double get discountAmount => hasDiscount ? (price * discount! / 100) : 0.0;
+
+  /// Discount as string
+  String get discountString => hasDiscount ? '$discount% Off' : '';
+
+  /// Formatted price string
+  String _formattedPrice(double price) => '\$${price.toStringAsFixed(2)}';
+
+  /// Formatted real price string
+  String get formattedRealPrice => _formattedPrice(realPrice);
+
+  /// Formatted original price String
+  String get formattedOriginalPrice => _formattedPrice(originalPrice);
+
+  /// Check if the product has size
+  bool get hasSize => sizes != null;
+
+  /// Check if has rating
+  bool get hasRating => rateValue != null;
 }
 
-/// ProductEntity builder pattern
-class ProductBuiler {
-  int? _id;
-  String? _title;
-  double? _price;
-  String? _description;
-  String? _category;
-  String? _imageUrl;
-  String? _brand;
-  String? _model;
-  String? _color;
-  int? _discount;
-  bool? _isPopular;
-  bool? _isOnSale;
-  Rating? _rating;
-
-  ProductBuiler setId(int id) {
-    _id = id;
-    return this;
-  }
-
-  ProductBuiler setTitle(String title) {
-    _title = title;
-    return this;
-  }
-
-  ProductBuiler setPrice(double price) {
-    _price = price;
-    return this;
-  }
-
-  ProductBuiler setDescription(String description) {
-    _description = description;
-    return this;
-  }
-
-  ProductBuiler setCategory(String category) {
-    _category = category;
-    return this;
-  }
-
-  ProductBuiler setImageUrl(String imageUrl) {
-    _imageUrl = imageUrl;
-    return this;
-  }
-
-  ProductBuiler setBrand(String? brand) {
-    _brand = brand;
-    return this;
-  }
-
-  ProductBuiler setModel(String? model) {
-    _model = model;
-    return this;
-  }
-
-  ProductBuiler setColor(String? color) {
-    _color = color;
-    return this;
-  }
-
-  ProductBuiler setDiscount(int? discount) {
-    _discount = discount;
-    return this;
-  }
-
-  ProductBuiler setIsPopular(bool isPopular) {
-    _isPopular = isPopular;
-    return this;
-  }
-
-  ProductBuiler setIsOnSale(bool isOnSale) {
-    _isOnSale = isOnSale;
-    return this;
-  }
-
-  ProductBuiler setRating(Rating? rating) {
-    _rating = rating;
-    return this;
-  }
-
-  Product build() {
-    return Product._(
-      id: _id ?? 0,
-      title: _title ?? '',
-      price: _price ?? 0.0,
-      description: _description ?? '',
-      category: _category ?? '',
-      imageUrl: _imageUrl ?? '',
-      brand: _brand ?? '',
-      model: _model ?? '',
-      color: _color ?? '',
-      discount: _discount ?? 0,
-      isOnSale: _isOnSale ?? false,
-      isPopular: _isPopular ?? false,
-      rating: _rating ?? Rating.empty(),
-    );
-  }
-}
-
+//
 class Rating {
   final double rateValue;
   final int reviewsCount;
@@ -236,7 +153,7 @@ class Rating {
 
 class _ProductLoading extends Product {
   _ProductLoading()
-    : super._(
+    : super(
         id: 0,
         title: 'Loading...',
         price: 0.0,
@@ -248,6 +165,6 @@ class _ProductLoading extends Product {
         color: null,
         discount: null,
         isOnSale: false,
-        isPopular: false,
+        isNew: false,
       );
 }

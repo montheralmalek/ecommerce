@@ -6,9 +6,10 @@ import 'package:logging/logging.dart';
 import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/core/config/providers.dart';
 import 'package:store/main_platform_app.dart';
-import 'package:store/widgets/widgets.dart';
+import 'package:store/core/widgets/widgets.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   debugPrint('Starting application');
   // Set up logging
   if (kDebugMode) {
@@ -30,7 +31,6 @@ void main() async {
   } else {
     Logger.root.level = Level.WARNING; // Reduce logging in production
   }
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize dependencies and other tasks
   await Future.microtask(() async {

@@ -1,4 +1,3 @@
-import 'package:store/core/utils/errors/app_errors.dart';
 import 'package:store/core/utils/result.dart';
 
 abstract class AuthRepository {

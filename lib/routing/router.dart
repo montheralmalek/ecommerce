@@ -3,13 +3,16 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
-import 'package:store/presentation/features/home/views/home_screen.dart';
-import 'package:store/presentation/features/product/views/product_detail_screen.dart';
-import 'package:store/presentation/features/product/views/product_feedback_screen.dart';
-import 'package:store/presentation/features/settings/widgets/settings_screen.dart';
-import 'package:store/widgets/widgets.dart';
+import 'package:store/development_view.dart';
+import 'package:store/domain/entities/product.dart';
+import 'package:store/ui/features/cart/views/add_to_cart_view.dart';
+import 'package:store/ui/features/home/views/home_screen.dart';
+import 'package:store/ui/features/product/views/product_detail_screen.dart';
+import 'package:store/ui/features/product/views/product_feedback_screen.dart';
+import 'package:store/ui/features/settings/widgets/settings_screen.dart';
+import 'package:store/core/widgets/widgets.dart';
 
-import '../presentation/features/auth/widgets/login_screen.dart';
+import '../ui/features/auth/widgets/login_screen.dart';
 import 'routes.dart';
 
 final _log = Logger('Router');
@@ -126,6 +129,27 @@ final GoRouter router = GoRouter(
         );
       },
     ),
+    // Cart Routes----------
+    GoRoute(
+      name: AppRoutes.addToCart,
+      path: AppRoutes.addToCart,
+
+      builder: (context, state) {
+        _log.info('Navigating to Add to Cart Screen');
+        final Product product = state.extra as Product;
+        return AddToCartView(productId: product.id);
+      },
+    ),
+    // Development View Route (only in debug mode)
+    if (const bool.fromEnvironment('dart.vm.product') == false)
+      GoRoute(
+        name: AppRoutes.developmentView,
+        path: AppRoutes.developmentView,
+        builder: (context, state) {
+          _log.info('Navigating to Development View');
+          return const DevelopmentView();
+        },
+      ),
   ],
 );
 

@@ -1,5 +1,8 @@
 abstract final class ApiEndpoints {
-  static const String baseUrl = 'https://fakestoreapi.in/api';
+  static const String _reactBaseurl =
+      'https://fakestoreapiserver.reactbd.org/api';
+  // static const String _fakestoreBaseUrl = 'https://fakestoreapi.com';
+  static const String baseUrl = _reactBaseurl;
 
   // Auth endpoints
   static const String login = '$baseUrl/auth/login';
