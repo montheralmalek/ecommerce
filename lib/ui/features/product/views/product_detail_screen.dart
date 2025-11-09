@@ -13,7 +13,7 @@ import 'package:store/ui/widgets/add_to_cart_button.dart';
 import 'package:store/ui/widgets/brief_rating_widget.dart';
 import 'package:store/ui/widgets/default_cupertino_navigation_bar_data.dart';
 import 'package:store/ui/widgets/horizontal_item_list_view_builder.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/ui/cubits/getProductByIdCubit/get_product_by_id_cubit.dart';
 import 'package:store/ui/features/product/widgets/product_image_slider.dart';
 import 'package:store/ui/features/product/widgets/product_rating_detail_widget.dart';
@@ -47,7 +47,7 @@ class ProductDetailScreen extends StatelessWidget {
                   );
                 }
                 if (state is GetProductByIdError) {
-                  return CustomErrorWidget(message: state.message);
+                  return GlobalErrorWidget(message: state.message);
                 }
                 final product = state.product;
                 return Skeletonizer(
@@ -246,7 +246,7 @@ class ProductDetailScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PriceWidget.large(product: product),
+        PricingWidget.large(product: product),
 
         BriefRatingWidget(rateValue: 4.4, reviewsCount: 128),
       ],

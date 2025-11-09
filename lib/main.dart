@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/core/config/providers.dart';
+import 'package:store/core/utils/errors/error_handler.dart';
 import 'package:store/main_platform_app.dart';
-import 'package:store/core/widgets/widgets.dart';
 
 void main() async {
+  debugPrint('Initializing the application');
   WidgetsFlutterBinding.ensureInitialized();
-  debugPrint('Starting application');
+  ErrorHandler.setupErrorHandling();
+
   // Set up logging
   if (kDebugMode) {
     Logger.root.level = Level.ALL;
@@ -39,18 +41,18 @@ void main() async {
     debugPrint('Dependencies initialized');
   });
 
-  // Custom error handling
-  FlutterError.onError = (details) {
-    FlutterError.dumpErrorToConsole(details);
-    // Optionally log errors to a monitoring service
-  };
+  // // Custom error handling
+  // FlutterError.onError = (details) {
+  //   FlutterError.dumpErrorToConsole(details);
+  //   // Optionally log errors to a monitoring service
+  // };
 
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    if (kDebugMode) {
-      return CustomErrorWidget(message: details.exceptionAsString());
-    }
-    return const CustomErrorWidget(message: 'An unexpected error occurred.');
-  };
+  // ErrorWidget.builder = (FlutterErrorDetails details) {
+  //   if (kDebugMode) {
+  //     return GlobalErrorWidget(message: details.exceptionAsString());
+  //   }
+  //   return const CustomErrorWidget(message: 'An unexpected error occurred.');
+  // };
 
   runApp(const MainApp());
 }

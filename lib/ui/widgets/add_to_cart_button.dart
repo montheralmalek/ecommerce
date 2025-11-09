@@ -5,7 +5,7 @@ import 'package:store/core/themes/dimens.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
 import 'package:store/core/utils/extensions/widget_extensions.dart';
 import 'package:store/core/widgets/input_quantity.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/core/widgets/widgets.dart';
 import 'package:store/ui/features/cart/cubits/add_to_cart_cubit/add_to_cart_cubit.dart';
 import 'package:store/ui/features/cart/views/spacers.dart';

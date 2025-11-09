@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
   /// Creates a button with an elevated style.
   const CustomButton({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     this.expanded = false,
     this.label,
     this.icon,
@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
   /// Creates a button with a filled style.
   const CustomButton.filled({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     this.expanded = false,
     this.label,
     this.icon,
@@ -59,7 +59,7 @@ class CustomButton extends StatelessWidget {
   /// Creates a button with a tonal style.
   const CustomButton.tonal({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     this.expanded = false,
     this.label,
     this.icon,

@@ -1,4 +1,4 @@
-import 'exceptions.dart';
+import '../exceptions/app_exceptions.dart';
 
 abstract class AppError {
   final String message;
@@ -40,19 +40,20 @@ class CustomError extends AppError {
 // Conversion from exceptions to failures
 extension ExceptionToErrorMapper on AppException {
   AppError toError() {
-    switch (this) {
-      case NetworkException _:
-        return NetworkError(message, stackTrace);
-      case DataException _:
-        return DataError(message, stackTrace);
-      case BusinessException _:
-        return BusinessError(message, stackTrace);
-      case UIException _:
-        return UIError(message, stackTrace);
-      case CustomException _:
-        return CustomError(message, stackTrace);
-      default:
-        return UnknownError(message, stackTrace);
-    }
+    return CustomError(message);
+    // switch (this) {
+    //   case NetworkException _:
+    //     return NetworkError(message, stackTrace);
+    //   case DataException _:
+    //     return DataError(message, stackTrace);
+    //   case BusinessException _:
+    //     return BusinessError(message, stackTrace);
+    //   case UIException _:
+    //     return UIError(message, stackTrace);
+    //   case CustomException _:
+    //     return CustomError(message, stackTrace);
+    //   default:
+    //     return UnknownError(message, stackTrace);
+    // }
   }
 }

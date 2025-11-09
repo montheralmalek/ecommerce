@@ -1,5 +1,5 @@
 import 'package:store/core/utils/errors/app_errors.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 import 'package:store/core/utils/result.dart';
 import 'package:store/data/mappers/banner_mapper.dart';
 import 'package:store/data/mappers/home_section_mapper.dart';

@@ -1,11 +1,11 @@
 import 'package:store/core/network/network_info.dart';
 import 'package:store/core/utils/errors/app_errors.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 import 'package:store/core/utils/result.dart';
 import 'package:store/data/mappers/product_mapper_extension.dart';
 import 'package:store/data/repositories/product_repository/product_repository.dart';
 import 'package:store/data/services/remote/api_service.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ApiService _remoteDataSource;
@@ -94,10 +94,12 @@ class ProductRepositoryImpl implements ProductRepository {
 
       //   throw NetworkException.noInternet();
       // }
-    } on AppException catch (e) {
-      return Result.failure(e.toError());
+      // } on AppException catch (e) {
+      //   return Result.failure(e.toError());
     } on Exception catch (e) {
       return Result.failure(AppError.fromException(e));
+    } catch (e) {
+      return Result.failure(NetworkException.unknown().toError());
     }
   }
 }

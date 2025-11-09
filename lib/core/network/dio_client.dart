@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/dio_exception_mapper.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 
 class DioClient {
   final Dio dio;
@@ -23,12 +24,8 @@ class DioClient {
       _response = await dio.get(endpoint, queryParameters: params);
 
       return _response!;
-    } on DioException catch (e) {
+    } on Exception catch (e) {
       throw e.toAppException();
-    } on SocketException catch (e) {
-      throw e.toAppException();
-    } on AppException {
-      rethrow;
     } catch (e) {
       throw AppException.custom('Exception: ${_response?.statusCode} $e');
     }
@@ -39,12 +36,8 @@ class DioClient {
     try {
       _response = await dio.post(endpoint, data: data);
       return _response!;
-    } on DioException catch (e) {
+    } on Exception catch (e) {
       throw e.toAppException();
-    } on SocketException {
-      throw NetworkException.noInternet();
-    } on AppException {
-      rethrow;
     } catch (e) {
       throw AppException.custom('ERROR00: $e');
     }

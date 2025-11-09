@@ -1,7 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/core/utils/errors/app_errors.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 
 import 'package:store/core/utils/result.dart';
 

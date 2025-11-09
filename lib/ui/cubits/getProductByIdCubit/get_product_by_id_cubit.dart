@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store/data/repositories/product_repository/product_repository.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
 part 'get_product_by_id_state.dart';
 

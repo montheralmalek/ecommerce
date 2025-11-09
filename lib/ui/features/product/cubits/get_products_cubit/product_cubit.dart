@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/domain/use_cases/get_products_use_case.dart';
 
 part 'product_state.dart';

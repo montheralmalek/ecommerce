@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:store/ui/widgets/item_card.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
 class ItemListViewHorizontalBuilder extends StatelessWidget {
   const ItemListViewHorizontalBuilder({

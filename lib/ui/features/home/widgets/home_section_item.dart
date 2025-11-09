@@ -5,7 +5,7 @@ import 'package:store/core/config/dependency_injection.dart';
 import 'package:store/ui/widgets/horizontal_item_list_view_builder.dart';
 import 'package:store/domain/entities/ad_banner.dart';
 import 'package:store/domain/entities/home_section.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/domain/use_cases/get_banners_use_case.dart';
 import 'package:store/domain/use_cases/get_section_products_use_case.dart';
 import 'package:store/ui/features/home/cubits/get_home_section_data_cubit/get_home_section_data_cubit.dart';
@@ -88,12 +88,13 @@ class _HSecContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GetHomeSectionDataCubit, GetHomeSectionDataState>(
       builder: (context, state) {
-        // Handle different states
-        if (state is GetHomeSectionDataInitial) {
-          return SizedBox.shrink();
-        }
         if (state is GetHomeSectionDataError) {
-          return CustomErrorWidget(message: state.message);
+          return GlobalErrorWidget(
+            message: state.message,
+            onRetry: () {
+              context.read<GetHomeSectionDataCubit>().retry();
+            },
+          );
         }
         if (state is GetHomeSectionDataLoaded) {
           final section = state.section;

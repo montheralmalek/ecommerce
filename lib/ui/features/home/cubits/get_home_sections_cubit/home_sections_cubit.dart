@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store/domain/entities/ad_banner.dart';
 import 'package:store/domain/entities/home_section.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/domain/use_cases/get_home_sections_use_case.dart';
 import 'package:store/domain/use_cases/get_section_products_use_case.dart';
 

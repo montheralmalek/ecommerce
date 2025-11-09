@@ -22,17 +22,14 @@ class SectionTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: contentPadding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (_hasHeader) _buildHeader(context),
-          Offstage(offstage: !_hasHeader, child: SizedBox(height: spacing)),
-          content ?? SizedBox.shrink(),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_hasHeader) _buildHeader(context),
+        Offstage(offstage: !_hasHeader, child: SizedBox(height: spacing)),
+        content ?? SizedBox.shrink(),
+      ],
     );
   }
 

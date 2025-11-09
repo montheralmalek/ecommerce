@@ -1,4 +1,4 @@
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
 import '../services/remote/models/product_api_model.dart';
 

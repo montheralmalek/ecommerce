@@ -5,7 +5,7 @@ import 'package:store/core/utils/extensions/context_extensions.dart';
 import 'package:store/ui/widgets/brief_rating_widget.dart';
 import 'package:store/ui/cubits/getProductByIdCubit/get_product_by_id_cubit.dart';
 import 'package:store/routing/routes.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/ui/widgets/price_widget.dart';
 import 'package:store/ui/widgets/product_image_widget.dart';
 
@@ -92,7 +92,7 @@ class ItemCradHorizontal extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
-                    PriceWidget(product: product),
+                    PricingWidget(product: product),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

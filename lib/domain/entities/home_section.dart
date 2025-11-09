@@ -1,6 +1,6 @@
 import 'package:store/domain/entities/ad_banner.dart';
 import 'package:store/domain/entities/catgory.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
 ///
 enum HomeSectionType {

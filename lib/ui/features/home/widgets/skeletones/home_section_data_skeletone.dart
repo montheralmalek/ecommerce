@@ -4,7 +4,7 @@ import 'package:store/ui/widgets/horizontal_item_list_view_builder.dart';
 import 'package:store/ui/widgets/items_list_sliver_grid_builder.dart';
 import 'package:store/domain/entities/ad_banner.dart';
 import 'package:store/domain/entities/home_section.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/ui/features/home/cubits/get_home_section_data_cubit/get_home_section_data_cubit.dart';
 import 'package:store/ui/features/home/widgets/banner_slider.dart';
 

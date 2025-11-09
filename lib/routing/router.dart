@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
 import 'package:store/development_view.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 import 'package:store/ui/features/cart/views/add_to_cart_view.dart';
 import 'package:store/ui/features/home/views/home_screen.dart';
 import 'package:store/ui/features/product/views/product_detail_screen.dart';
@@ -45,6 +45,14 @@ final GoRouter router = GoRouter(
   // },
   errorPageBuilder: _errorPage,
 
+  // errorBuilder: (context, state) {
+  //   return ErrorScreen(
+  //     errorMessage:
+  //         state.error != null
+  //             ? 'Page Not Found: ${state.error}'
+  //             : 'Unknown Route',
+  //   );
+  // },
   routes: [
     GoRoute(
       name: AppRoutes.home,
@@ -154,7 +162,7 @@ final GoRouter router = GoRouter(
 );
 
 Page _errorPage(BuildContext context, GoRouterState state) {
-  _log.severe('Error: ${state.error}');
+  _log.severe('------ Error: ${state.error}');
 
   return platformPage(
     context: context,
@@ -167,16 +175,16 @@ Page _errorPage(BuildContext context, GoRouterState state) {
   );
 }
 
-class ErrorScreen extends StatelessWidget {
-  final String message;
-  const ErrorScreen({super.key, this.message = 'Page Not Found'});
-  static final _log = Logger('ErrorScreen');
+// class ErrorScreen extends StatelessWidget {
+//   final String message;
+//   const ErrorScreen({super.key, this.message = 'Page Not Found'});
+//   static final _log = Logger('ErrorScreen');
 
-  @override
-  Widget build(BuildContext context) {
-    return PlatformScaffold(body: CustomErrorWidget(message: message));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return PlatformScaffold(body: CustomErrorWidget(message: message));
+//   }
+// }
 
 class UnImplementedWidget extends StatelessWidget {
   const UnImplementedWidget({super.key});

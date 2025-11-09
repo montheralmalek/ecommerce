@@ -24,7 +24,7 @@ class MainPlatformApp extends StatelessWidget {
             return PlatformApp.router(
               title: 'Store App',
               routerConfig: router,
-              debugShowCheckedModeBanner: kDebugMode ? true : false,
+              debugShowCheckedModeBanner: kDebugMode,
               localizationsDelegates: [
                 DefaultCupertinoLocalizations.delegate,
                 DefaultMaterialLocalizations.delegate,

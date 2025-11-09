@@ -7,7 +7,7 @@ import 'package:store/core/network/dio_client.dart';
 import 'package:store/data/services/remote/models/ad_banner_model.dart';
 import 'package:store/data/services/remote/models/home_section_model.dart';
 
-import '../../../core/utils/errors/exceptions.dart';
+import '../../../core/utils/exceptions/app_exceptions.dart';
 import 'models/product_api_model.dart';
 
 abstract class ApiService {
@@ -87,17 +87,17 @@ class ApiServiceImpl implements ApiService {
   }) async {
     try {
       // fetch products based on section
-      return getProducts(limit: limit);
+      return await getProducts(limit: limit);
     } catch (e) {
       throw _handleException(e);
     }
   }
 
   @override
-  Future<List<ProductApiModel>> getBannerProducts(String banner) {
+  Future<List<ProductApiModel>> getBannerProducts(String banner) async {
     try {
       // fetch products based on section
-      return getProducts(limit: 20);
+      return await getProducts(limit: 20);
     } catch (e) {
       throw _handleException(e);
     }

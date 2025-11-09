@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
   Widget _getHomePageBody(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeSectionState>(
       builder: (context, state) {
-        if (state is HomeSectionError) return _buildError(state);
+        if (state is HomeSectionError) return _buildError(context, state);
         if (state is HomeSectionInitial) {
           context.read<HomeCubit>().loadHomeSections();
         }
@@ -79,7 +79,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildSections(List<HomeSection> sections) {
     return SafeArea(
       child: CustomScrollView(
-        physics: PageScrollPhysics(),
+        // physics: PageScrollPhysics(),
         slivers: [
           SliverList.builder(
             itemCount: sections.length,
@@ -101,8 +101,13 @@ class HomeScreen extends StatelessWidget {
   //
   Widget _buildLoading() => Center(child: CircularProgressIndicator());
   //
-  Widget _buildError(HomeSectionError state) =>
-      CustomErrorWidget(message: state.message);
+  Widget _buildError(BuildContext context, HomeSectionError state) =>
+      GlobalErrorWidget(
+        message: state.message,
+        onRetry: () {
+          context.read<HomeCubit>().retry();
+        },
+      );
   //
   void _openNavigation(BuildContext context) {
     if (isMaterial(context)) {
@@ -177,36 +182,6 @@ class HomeScreen extends StatelessWidget {
 
   List<Widget> get _appBarActionsList => [
     const LogOutButton(),
-    const RefreshHomeButton(),
     if (kDebugMode) const GoToDevelopmentViewButton(),
   ];
-}
-
-/// Refresh button
-
-class RefreshHomeButton extends StatelessWidget {
-  const RefreshHomeButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeSectionState>(
-      builder: (context, state) {
-        if (state is HomeSectionLoading) {
-          return const SizedBox.shrink();
-        }
-        return _buildRefreshButton(context);
-      },
-    );
-  }
-
-  Widget _buildRefreshButton(BuildContext context) {
-    return PlatformIconButton(
-      padding: EdgeInsets.zero,
-      icon: Icon(context.platformIcons.refresh),
-      onPressed: () {
-        context.read<HomeCubit>().retry();
-        // BlocProvider.of<HomeCubit>(context).retry();
-      },
-    );
-  }
 }

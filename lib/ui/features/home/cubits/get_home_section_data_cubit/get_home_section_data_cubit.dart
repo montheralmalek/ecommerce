@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 import 'package:store/domain/entities/home_section.dart';
 import 'package:store/domain/use_cases/get_banners_use_case.dart';
 import 'package:store/domain/use_cases/get_section_products_use_case.dart';

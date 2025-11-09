@@ -26,6 +26,7 @@ class CustomCarouselSlider extends StatefulWidget {
   final bool reverse;
   final Axis scrollDirection;
   final bool disableCenter;
+
   // indicator ------------
   final Color inActiveIndicatorColor;
   final Color activeIndicatorColor;
@@ -195,6 +196,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
         widget.items != null
             ? CarouselSlider(
               carouselController: _carouselController,
+
               items: widget.items,
               options: _buildCarouselOptions(),
             )
@@ -222,6 +224,7 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
       initialPage: widget.initialPage,
       enableInfiniteScroll: widget.enableInfiniteScroll,
       reverse: widget.reverse,
+      scrollDirection: widget.scrollDirection,
       // enlargeStrategy: CenterPageEnlargeStrategy.height,
       disableCenter: widget.disableCenter,
       onPageChanged: (index, reason) {

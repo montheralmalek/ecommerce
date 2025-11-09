@@ -1,4 +1,4 @@
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 
 class ProductApiModel {
   final int id;

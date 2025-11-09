@@ -1,7 +1,7 @@
 import 'package:logging/logging.dart';
 import 'package:store/core/network/dio_client.dart';
 import 'package:store/core/utils/errors/app_errors.dart';
-import 'package:store/core/utils/errors/exceptions.dart';
+import 'package:store/core/utils/exceptions/app_exceptions.dart';
 import 'package:store/core/utils/result.dart';
 import 'package:store/data/services/remote/models/login_request.dart';
 import 'package:store/data/services/remote/models/login_response.dart';

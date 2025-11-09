@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:store/core/utils/extensions/context_extensions.dart';
-import 'package:store/domain/entities/product.dart';
+import 'package:store/domain/entities/product/product.dart';
 
-class PriceWidget extends StatelessWidget {
-  const PriceWidget({super.key, required this.product})
+class PricingWidget extends StatelessWidget {
+  const PricingWidget({super.key, required this.product})
     : _isLarge = false,
       _isSmall = false;
 
-  const PriceWidget.large({super.key, required this.product})
+  const PricingWidget.large({super.key, required this.product})
     : _isLarge = true,
       _isSmall = false;
-  const PriceWidget.small({super.key, required this.product})
+  const PricingWidget.small({super.key, required this.product})
     : _isLarge = false,
       _isSmall = true;
 
@@ -24,16 +24,6 @@ class PriceWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          product.formattedRealPrice,
-          style: TextStyle(
-            fontSize: _realPriceFontSize(context),
-            color: context.theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-          // textScaler: TextScaler.linear(0.2),
-        ),
-
         if (product.hasDiscount)
           Row(
             children: [
@@ -57,6 +47,16 @@ class PriceWidget extends StatelessWidget {
               ),
             ],
           ),
+
+        Text(
+          product.formattedRealPrice,
+          style: TextStyle(
+            fontSize: _realPriceFontSize(context),
+            color: context.theme.colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+          // textScaler: TextScaler.linear(0.2),
+        ),
       ],
     );
   }
